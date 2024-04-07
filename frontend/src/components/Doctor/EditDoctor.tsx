@@ -48,7 +48,8 @@ const EditDoctor:React.FC<EditDocProps> =({onSave,onCancel}) =>{
     status: ''
   });
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  // const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };

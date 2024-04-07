@@ -2,19 +2,26 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Loader from './common/Loader';
-import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import Dashboard from './pages/Dashboard/hospitalDash';
+import ECommerce from './pages/Dashboard/ECommerce';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
-import DoctorsList from './pages/Lists/Doctorlist';
+import Deptlist from './pages/Lists/Deptlist';
+import DoctorList from './pages/Lists/Doctorlist';
 import Adddoctor from './components/Doctor/Adddoctor';
+import Doctorprofile from './components/Doctor/Doctorprofile';
+// import AddDept from './components/Hospital/AddDept';
+import Appoint from './components/Tables/Appoint';
+import DeptProfile from './components/Hospital/DeptProfile';
+import EditDept from './components/Hospital/EditDept';
+import EditDoctor from './components/Doctor/EditDoctor';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -42,6 +49,22 @@ function App() {
           }
         />
         <Route
+          path="/pages/Dashboard/ECommerce"
+          element={
+            <>
+              <ECommerce />
+            </>
+          }
+        />
+        {/* <Route
+        path="/components/Hospital/EditDept"
+        element={
+          <>
+          <EditDept/>
+          </>
+        }
+        /> */}
+        <Route
           path="/calendar"
           element={
             <>
@@ -58,10 +81,18 @@ function App() {
           }
         />
         <Route
-          path="/pages/Lists/Doctorlist"
+          path="/Lists/Deptlist"
           element={
             <>
-              <DoctorsList />
+              <Deptlist />
+            </>
+          }
+        />
+                <Route
+          path="/Lists/Doctorlist"
+          element={
+            <>
+              <DoctorList />
             </>
           }
         />
@@ -122,8 +153,40 @@ function App() {
             </>
           }
         />
+        {/* <Route
+          path="/components/Doctor/EditDoctor"
+          element={
+            <>
+              <EditDoctor />
+            </>
+          }
+        /> */}
         <Route
-          path="/pages/Authentication/SignUp"
+          path="/components/Doctor/Doctorprofile"
+          element={
+            <>
+              <Doctorprofile />
+            </>
+          }
+        />
+        <Route
+        path='/components/Hospital/DeptProfile'
+        element={
+          <>
+          <DeptProfile/>
+          </>
+        }
+        />
+        {/* <Route
+          path="/components/Hospital/AddDept"
+          element={
+            <>
+              <AddDept />
+            </>
+          }
+        /> */}
+        <Route
+          path="/auth/signup"
           element={
             <>
               <SignUp />
@@ -135,6 +198,13 @@ function App() {
           element={
             <>
               <Dashboard />
+            </>
+          } />
+          <Route
+          path="/components/Tables/Appoint"
+          element={
+            <>
+              <Appoint />
             </>
           }
         />
