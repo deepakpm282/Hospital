@@ -1,10 +1,9 @@
 import { useFormContext } from 'react-hook-form';
 import { HospitalFormData } from './ManageHosForm';
 
-const DocDetails = () => {
+const HosDetails = () => {
   const {
     register,
-    watch,
     formState: { errors },
   } = useFormContext<HospitalFormData>();
   return (
@@ -79,74 +78,6 @@ const DocDetails = () => {
           )}
         </div>
       </div>
-      {/* <div className="flex">
-        <div className="flex-grow">
-          <label htmlFor="email" className="block text-sm font-medium">
-            Email *
-          </label>
-          <input
-            type="email"
-            autoComplete="email"
-            placeholder="Enter your email"
-            className="mt-1 p-2 border rounded w-full"
-            {...register('email', {
-              required: 'Email is required.!',
-              minLength: {
-                value: 6,
-                message: 'Email must be at least 6 characters..',
-              },
-            })}
-          />
-          {errors.email && (
-            <span className="text-red-500">{errors.email.message}</span>
-          )}
-        </div>
-        <div className="flex-grow">
-          <label htmlFor="password" className="block text-sm font-medium">
-            Password *
-          </label>
-          <input
-            type="password"
-            autoComplete="password"
-            placeholder="Enter your password"
-            className="mt-1 p-2 border rounded w-full"
-            {...register('password', {
-              required: 'Password field is required..',
-            })}
-          />
-          {errors.password && (
-            <span className="text-red-500">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-        <div className="flex-grow">
-          <label htmlFor="password" className="block text-sm font-medium">
-            Confirm Password *
-          </label>
-          <input
-            type="password"
-            autoComplete="password"
-            placeholder="Re-enter your password"
-            className="mt-1 p-2 border rounded w-full"
-            {...register('confirm_password', {
-              required: 'Confirm password field is required..',
-              validate: (val) => {
-                if (!val) {
-                  return 'This field is required..';
-                } else if (watch('password') !== val) {
-                  return 'Password does not match';
-                }
-              },
-            })}
-          />
-          {errors.confirm_password && (
-            <span className="text-red-500">
-              {errors.confirm_password.message}
-            </span>)};
-        </div>
-      </div> */}
-
       <div className="flex">
         <div className="flex-grow mr-4">
           <label htmlFor="date_of_birth" className="block text-sm font-medium">
@@ -270,4 +201,4 @@ const DocDetails = () => {
     </div>
   );
 };
-export default DocDetails;
+export default HosDetails;

@@ -24,6 +24,7 @@ const AddDoctorData = () => {
   });
 
   const handleSave = (docFormData: FormData) => {
+    console.log(docFormData)
     mutate(docFormData);
   };
 

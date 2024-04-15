@@ -20,20 +20,9 @@ const Hospital_Registration = () => {
       showToast({ message: error.message, type: 'ERROR' });
     },
   });
-
-  // const handleSave = (hospitalId: string) => (HosFormData: FormData) => {
-  //   if (hospitalId) {
-  //     HosFormData.append('id', hospitalId);
-  //   }
-  //   console.log('formData', HosFormData);
-  //   mutate(HosFormData);
-  // };
-
-  // return (
-  //   <ManageHosForm onSave={handleSave(hospitalId)} isLoading={isLoading} />
-  // );
-
+  
   const handleSave = (HosFormData: FormData) => {
+    console.log(FormData)
     mutate(HosFormData);
   };
 

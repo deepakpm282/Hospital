@@ -71,6 +71,7 @@ router.post(
   verifyDoc,
   upload.single("photo"),
   async (req: Request, res: Response) => {
+    console.log(req.body)
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       console.log(errors.array());

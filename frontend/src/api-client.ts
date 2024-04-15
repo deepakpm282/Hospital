@@ -23,21 +23,29 @@ export const Hospital_SignUp = async (formData: Hospital_SignUp_Data) => {
   if (!response.ok) {
     throw new Error(responseBody.message);
   }
-
   return responseBody;
 };
 
 export const Hospital_Register = async (HosFormData: FormData) => {
-  console.log('JSON.stringify(HosFormData) >>> ', JSON.stringify(HosFormData));
+  console.log(HosFormData)
+  const response = await fetch(`${API_BASE_URL}/api/hospitals/hospital-register`, {
+    method: 'POST',
+    credentials: 'include', // to add http cookie while we are registering
+    body: HosFormData,
+   });
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+  return body;
+};
 
-  const response = await fetch(
-    `${API_BASE_URL}/api/hospitals/hospital-register`,
-    {
-      method: 'POST',
-      credentials: 'include', // to add http cookie while we are registering
-      body: HosFormData,
-    },
-  );
+export const Add_Doc_To_Hos = async (docFormData: FormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/doctors/doctor-register`, {
+    method: 'POST',
+    credentials: 'include', // to add http cookie while we are registering
+    body: docFormData,
+  });
   const body = await response.json();
   if (!response.ok) {
     throw new Error(body.message);
@@ -54,20 +62,7 @@ export const Hospital_Login = async (formData: Hospital_Login_Data) => {
     },
     body: JSON.stringify(formData),
   });
-  const body = await response.json();
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
-  return body;
-};
 
-export const Add_Doc_To_Hos = async (docFormData: FormData) => {
-  console.log(docFormData);
-  const response = await fetch(`${API_BASE_URL}/api/doctors/doctor-register`, {
-    method: 'POST',
-    credentials: 'include', // to add http cookie while we are registering
-    body: docFormData,
-  });
   const body = await response.json();
   if (!response.ok) {
     throw new Error(body.message);

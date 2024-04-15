@@ -62,8 +62,6 @@ const DocFormData = ({ onSave, isLoading }: props) => {
     if (formDataJson.photo && formDataJson.photo.length > 0) {
       formData.append('photo', formDataJson.photo[0]);
     }
-
-    console.log('[DocFormData] formData >>> ', formData);
     onSave(formData);
   });
 

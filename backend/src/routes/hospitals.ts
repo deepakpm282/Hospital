@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 import validateHospitalLogin from "../middlewares/validateHospitalLogins";
 import Hospital from "../models/hospitals";
-// import validateHospitalRegistration from "../middlewares/validateHospitalRegistration";
+// import validateHos from "../middlewares/validateHospitalRegistration";
 import verifyToken from "../middlewares/auth";
 
 const router = express.Router();
@@ -11,14 +11,14 @@ const router = express.Router();
 router.post(
   "/hospital-register",
   verifyToken,
-  // validateHospitalRegistration,
+  // validateHos,
   async (req: Request, res: Response) => {
+    console.log(req.body)
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: errors.array() });
     }
     try {
-      console.log(req.body.email);
       res.status(202).json({ message: "ok" });
     } catch (error) {
       console.log(error);
