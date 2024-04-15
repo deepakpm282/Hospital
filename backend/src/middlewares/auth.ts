@@ -9,8 +9,8 @@ declare global {
   }
 }
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies["auth_token"];
+const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+  const token = await req.cookies["auth_token"];
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -18,7 +18,6 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
     req.userId = (decoded as JwtPayload).userId;
-    return res.status(200).json({ message: token });
     next();
   } catch (error) {
     return res.status(401).json({ message: "unauthorized" });

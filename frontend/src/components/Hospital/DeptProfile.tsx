@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 const DeptProfile = () => {
     const deptData =[
         {
-            DName: 'Oncology',
-            mobile: '0487-648724',
-            email: '',
-            doctors: ['Dr. a','Dr.b', 'Dr.c'],
-            services: [],
-            facilities: [],
-            about:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet consectetur rem dolorem minus accusantium beatae blanditiis praesentium veritatis et modi libero explicabo voluptatibus dolore molestias perferendis, repellendus quaerat cum magni!',
-            additional:''
+          DName: 'Oncology',
+          mobile: '0487-648724',
+          email: '',
+          doctors: ['Dr. a','Dr.b', 'Dr.c'],
+          services: [],
+          facilities: [],
+          about:'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet consectetur rem dolorem minus accusantium beatae blanditiis praesentium veritatis et modi libero explicabo voluptatibus dolore molestias perferendis, repellendus quaerat cum magni!',
+          additional:''
         }
     ];
   return (
@@ -67,7 +67,6 @@ const DeptProfile = () => {
                             <span>Edit</span>
                           </label>
                         </div>
-                        
                     </div>
                 </div>
                 <div className="mx-auto  mt-12">
@@ -77,7 +76,6 @@ const DeptProfile = () => {
                       <p className='font-medium'>{brand.about}</p>
                     </div>
                   </div>
-
                   <hr/>
                   <div className="mt-3">
                     <div className="account-settings-container  p-4 rounded">
@@ -93,7 +91,6 @@ const DeptProfile = () => {
                         )) 
                         }
                       </ul>
-                      
                     </div>
                   </div>
                   <hr/>
@@ -110,7 +107,6 @@ const DeptProfile = () => {
                         )) 
                         }
                       </table>
-                      
                     </div>
                   </div>
                   <hr/>
@@ -127,10 +123,8 @@ const DeptProfile = () => {
                         )) 
                         }
                       </table>
-                      
                     </div>
                   </div>
-                  
                   <hr/>
                   <div className="mt-3">
                     <div className="account-settings-container  p-4 rounded">
@@ -141,27 +135,18 @@ const DeptProfile = () => {
                         <strong>Phone No: </strong>
                         <span className="pr-4">
                         {brand.mobile}
-                      
                         </span>
                       </div>
-                      
                       <div className="mb-2">
                         <strong>Email: </strong> {brand.email}
                       </div>
-                      
                       <div className="mb-2">
                         <strong>Additional Info: </strong> {brand.additional}
                       </div>
-                      
-
                     </div>
                   </div>
-                </div>
-                
+                </div>  
           </div>
-          
-
-        
         ))}
       
 

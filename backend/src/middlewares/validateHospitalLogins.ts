@@ -1,9 +1,8 @@
 import { check } from "express-validator";
+import { Request, Response } from "express";
 
 export const register = [
   check("email", "Email is required").isEmail(),
-  check("firstName", "First name is required").isString(),
-  check("lastName", "Last name is required").isString(),
   check("password", "must meet complexity requirements")
     .isLength({ min: 6 })
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/, "i")

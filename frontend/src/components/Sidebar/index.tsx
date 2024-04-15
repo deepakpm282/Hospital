@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, useLocation,Link } from 'react-router-dom';
+import { NavLink, useLocation, Link, useNavigate } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import logo from '../../images/nillq-favicon-white.png'
+import logo from '../../images/nillq-favicon-white.png';
+import { useMutation, useQueryClient } from 'react-query';
+import { useAppContext } from '../../contexts/AppContext';
+import * as apiClient from '../../api-client';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -9,6 +12,30 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  const LogoutButton = () => {
+    const queryClient = useQueryClient();
+    const { showToast } = useAppContext();
+    const navigate = useNavigate();
+    const mutaion = useMutation(apiClient.Sign_Out, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries('validateToken');
+        showToast({ message: 'Signed out', type: 'SUCCESS' });
+        navigate('/');
+      },
+      onError: (error: Error) => {
+        showToast({ message: error.message, type: 'ERROR' });
+      },
+    });
+    const handleClick = () => {
+      mutaion.mutate();
+    };
+    return (
+      <button onClick={handleClick} className="text-white bg-transparent">
+        Logout
+      </button>
+    );
+  };
+
   const location = useLocation();
   const { pathname } = location;
 
@@ -17,7 +44,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(
-    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
+    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
 
   // close on click outside
@@ -64,10 +91,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-      <div className='flex justify-center gap-2 text-white '>
-        <img src={logo} alt='Logo' className='h-8 w-8 '/>
-        <div className='text-2xl font-bold pb-1'>NillQ</div>
-      </div>
+        <div className="flex justify-center gap-2 text-white ">
+          <img src={logo} alt="Logo" className="h-8 w-8 " />
+          <div className="text-2xl font-bold pb-1">NillQ</div>
+        </div>
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -89,7 +116,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             />
           </svg>
         </button>
-      </div> 
+      </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
@@ -150,13 +177,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                        <NavLink to='/pages/Dashboard/ECommerce'>
+                        <NavLink to="/pages/Dashboard/ECommerce">
                           Dashboard
                         </NavLink>
-                        
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
-                      
+
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
                   );
@@ -174,8 +200,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/' ||
-                            pathname.includes('Appoint')) &&
+                          (pathname === '/' || pathname.includes('Appoint')) &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -198,19 +223,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           />
                         </svg>
 
-                        <NavLink to='/components/Tables/Appoint'
-                        className={`group relative flex items-center rounded-sm py-2  font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          pathname.includes('Appoint') &&
-                          'bg-graydark dark:bg-meta-4'
-                        }`}
-                      >
-                        
-                        Create Appointment
+                        <NavLink
+                          to="/components/Tables/Appoint"
+                          className={`group relative flex items-center rounded-sm py-2  font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                            pathname.includes('Appoint') &&
+                            'bg-graydark dark:bg-meta-4'
+                          }`}
+                        >
+                          Create Appointment
                         </NavLink>
-                        
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
-                      
+
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
                   );
@@ -237,17 +261,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           'bg-graydark dark:bg-meta-4'
                         }`}
                       >
-                      
-                      <svg width="20" height="18" viewBox="0 0 20 18" version="1.1" id="doctor" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5,7C4.1193,7,3,5.8807,3,4.5l0,0v-2C3,2.2239,3.2239,2,3.5,2H4c0.2761,0,0.5-0.2239,0.5-0.5S4.2761,1,4,1H3.5
+                        <svg
+                          width="20"
+                          height="18"
+                          viewBox="0 0 20 18"
+                          version="1.1"
+                          id="doctor"
+                          fill="white"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M5.5,7C4.1193,7,3,5.8807,3,4.5l0,0v-2C3,2.2239,3.2239,2,3.5,2H4c0.2761,0,0.5-0.2239,0.5-0.5S4.2761,1,4,1H3.5
                         C2.6716,1,2,1.6716,2,2.5v2c0.0013,1.1466,0.5658,2.2195,1.51,2.87l0,0C4.4131,8.1662,4.9514,9.297,5,10.5C5,12.433,6.567,14,8.5,14
                         s3.5-1.567,3.5-3.5V9.93c1.0695-0.2761,1.7126-1.367,1.4365-2.4365C13.1603,6.424,12.0695,5.7809,11,6.057
                         C9.9305,6.3332,9.2874,7.424,9.5635,8.4935C9.7454,9.198,10.2955,9.7481,11,9.93v0.57c0,1.3807-1.1193,2.5-2.5,2.5S6,11.8807,6,10.5
                         c0.0511-1.2045,0.5932-2.3356,1.5-3.13l0,0C8.4404,6.7172,9.001,5.6448,9,4.5v-2C9,1.6716,8.3284,1,7.5,1H7
                         C6.7239,1,6.5,1.2239,6.5,1.5S6.7239,2,7,2h0.5C7.7761,2,8,2.2239,8,2.5v2l0,0C8,5.8807,6.8807,7,5.5,7 M11.5,9
-                        c-0.5523,0-1-0.4477-1-1s0.4477-1,1-1s1,0.4477,1,1S12.0523,9,11.5,9z"/>
-                      </svg>
-
+                        c-0.5523,0-1-0.4477-1-1s0.4477-1,1-1s1,0.4477,1,1S12.0523,9,11.5,9z"
+                          />
+                        </svg>
                         Doctor
                         {/* <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
@@ -297,7 +329,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </NavLink>
                           </li> */}
 
-                        {/* </ul>
+                      {/* </ul>
                       </div> */}
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
@@ -305,8 +337,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 }}
               </SidebarLinkGroup>
               {/* <!-- Menu Item Forms --> */}
-
-
 
               {/* <!-- Menu Item Forms --> */}
               <SidebarLinkGroup
@@ -320,11 +350,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <NavLink
                         to="/Lists/Deptlist"
                         className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/' ||
-                            pathname.includes('Deptlist')) &&
+                          (pathname === '/' || pathname.includes('Deptlist')) &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
-                        
                       >
                         <svg
                           className="fill-current"
@@ -412,7 +440,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   );
                 }}
               </SidebarLinkGroup>
-
             </ul>
           </div>
 
@@ -423,7 +450,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
-            <li>
+              <li>
                 <NavLink
                   to="/settings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -463,7 +490,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Settings
                 </NavLink>
               </li>
-           
+
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/auth' || pathname.includes('auth')
@@ -483,8 +510,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           sidebarExpanded
                             ? handleClick()
                             : setSidebarExpanded(true);
-                        }} >
-                      
+                        }}
+                      >
                         <svg
                           className="fill-current"
                           width="18"
@@ -514,12 +541,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </clipPath>
                           </defs>
                         </svg>
-                        <Link to='/'>
-                          Log Out
-                        </Link>
-                        
+                        <LogoutButton />
                       </NavLink>
-                      
                     </React.Fragment>
                   );
                 }}

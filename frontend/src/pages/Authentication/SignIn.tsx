@@ -6,7 +6,7 @@ import * as apiClient from '../../api-client';
 import { useAppContext } from '../../contexts/AppContext';
 import logo from '../../images/logo/login-02.png';
 
-export type signInFormData = {
+export type Hospital_Login_Data = {
   email: string;
   password: string;
 };
@@ -19,17 +19,17 @@ const SignIn: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<signInFormData>();
+  } = useForm<Hospital_Login_Data>();
 
   const onSubmit = handleSubmit((data) => {
     mutation.mutate(data);
   });
 
-  const mutation = useMutation(apiClient.signIn, {
+  const mutation = useMutation(apiClient.Hospital_Login, {
     onSuccess: async () => {
       showToast({ message: 'Sign in successfull', type: 'SUCCESS' });
       await queryClient.invalidateQueries('validateToken');
-      navigate('/pages/Dashboard/adminDash');
+      navigate('/pages/Dashboard/hospitalDash');
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: 'ERROR' });
@@ -43,10 +43,8 @@ const SignIn: React.FC = () => {
       onSubmit={onSubmit}
     >
       <div className="flex w-full h-full overflow-hidden ">
-        <div className=" xl:block xl:w-1/2 rounded-r-3xl">
-          <div className="py-10 px-10 text-center bg-blue-600 ">
-            <img src={logo} alt="Logo" />
-          </div>
+        <div className="hidden w-full xl:block xl:w-1/2 bg-blue-600 rounded-r-3xl">
+          <img src={logo} alt="Logo" />
         </div>
 
         <div className="xl:block xl:w-1/2 ">

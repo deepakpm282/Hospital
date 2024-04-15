@@ -6,7 +6,6 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
-import Dashboard from './pages/Dashboard/hospitalDash';
 import ECommerce from './pages/Dashboard/ECommerce';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
@@ -18,10 +17,12 @@ import DoctorList from './pages/Lists/Doctorlist';
 import Adddoctor from './components/Doctor/Adddoctor';
 import Doctorprofile from './components/Doctor/Doctorprofile';
 // import AddDept from './components/Hospital/AddDept';
+import HospitalRegistration from './components/Forms/HosRegistration/HosRegForm'
 import Appoint from './components/Tables/Appoint';
 import DeptProfile from './components/Hospital/DeptProfile';
-import EditDept from './components/Hospital/EditDept';
-import EditDoctor from './components/Doctor/EditDoctor';
+// import EditDept from './components/Hospital/EditDept';
+// import EditDoctor from './components/Doctor/EditDoctor';
+import HosDash from './pages/Dashboard/hospitalDash';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,10 +50,26 @@ function App() {
           }
         />
         <Route
+        path = '/pages/Authentication/SignUp'
+          element={
+            <>
+              <SignUp />
+            </>
+          }
+        />
+        <Route
           path="/pages/Dashboard/ECommerce"
           element={
             <>
               <ECommerce />
+            </>
+          }
+        />
+        <Route
+          path="/components/Forms/HosRegistration/HosRegForm"
+          element={
+            <>
+              <HospitalRegistration />
             </>
           }
         />
@@ -173,7 +190,7 @@ function App() {
         path='/components/Hospital/DeptProfile'
         element={
           <>
-          <DeptProfile/>
+            <DeptProfile/>
           </>
         }
         />
@@ -186,20 +203,13 @@ function App() {
           }
         /> */}
         <Route
-          path="/auth/signup"
+          path="/pages/Dashboard/hospitalDash"
           element={
             <>
-              <SignUp />
+              <HosDash />
             </>
-          }
+          } 
         />
-        <Route
-          path="/pages/Dashboard/adminDash"
-          element={
-            <>
-              <Dashboard />
-            </>
-          } />
           <Route
           path="/components/Tables/Appoint"
           element={

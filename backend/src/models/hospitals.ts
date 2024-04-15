@@ -3,18 +3,36 @@ import bcrypt from "bcryptjs";
 
 export type hospital = {
   _id: string;
+  hospital_name: string;
+  phone_number_1: number;
+  phone_number_2: number;
   email: string;
-  firstName: string;
-  lastName: string;
   password: string;
   confirm_password: string;
+  date_established: string;
+  unique_identification_number: number;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zip_code: string;
+  isVerified: boolean;
 };
 
 const hospitalSchema = new mongoose.Schema({
+  hospital_name: { type: String, unique: false },
+  phone_number_1: { type: Number, unique: true },
+  phone_number_2: { type: Number, unique: true },
   email: { type: String, required: true, unique: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
   password: { type: String, required: true },
+  date_established: { type: String, unique: true },
+  unique_identification_number: { type: String, unique: true },
+  address: { type: String },
+  city: { type: String },
+  state: { type: String },
+  country: { type: String },
+  zip_code: { type: String },
+  isVerified: { type: Boolean, default: false },
 });
 
 hospitalSchema.pre("save", async function (next) {

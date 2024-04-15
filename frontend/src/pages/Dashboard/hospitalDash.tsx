@@ -6,7 +6,7 @@ import TableOne from '../../components/Tables/TableOne';
 import DefaultLayout from '../../layout/DefaultLayout';
 import PastAppointments from '../../components/Tables/PastAppointments';
 
-const adminDash: React.FC = () => {
+const HosDash: React.FC = () => {
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
@@ -110,4 +110,4 @@ const adminDash: React.FC = () => {
   );
 };
 
-export default adminDash;
+export default HosDash;

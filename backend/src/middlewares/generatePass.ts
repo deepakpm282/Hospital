@@ -1,8 +1,4 @@
-export const generateDoctorId = (
-  firstName: string,
-  lastName: string,
-  birthDate: Date | string
-): string => {
+export const generateDoctorPass = (birthDate: Date | string): string => {
   // Convert birthDate to a Date object if it's not already
   if (typeof birthDate === "string") {
     birthDate = new Date(birthDate);
@@ -14,9 +10,9 @@ export const generateDoctorId = (
   const day: string = birthDate.getDate().toString().padStart(2, "0");
 
   // Combine all parts to form the Doctor ID
-  const doctorId: string = `${firstName.toLowerCase()}${lastName.toLowerCase()}${year}${month}${day}`;
+  const doctorId: string = `${year}${month}${day}`;
 
   return doctorId;
 };
 
-export default generateDoctorId;
+export default generateDoctorPass;

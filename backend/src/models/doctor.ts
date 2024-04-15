@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
-export type Doctors = {
+export type DoctorType = {
   _id: string;
   DocId: string;
   first_name: string;
@@ -8,7 +9,6 @@ export type Doctors = {
   phone_number: number;
   email: string;
   password: string;
-  confirm_password: string;
   date_of_birth: Date;
   gender: string;
   degrees: string;
@@ -21,18 +21,18 @@ export type Doctors = {
   state: string;
   country: string;
   zip_code: number;
-  photoUrl: string;
+  photo_Url: string;
   isApproved: boolean;
 };
 
-const docSchema = new mongoose.Schema<Doctors>({
-  // DocId: { type: String, required: true },
+const docSchema = new mongoose.Schema<DoctorType>({ 
+  DocId: { type: String, required: true },
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   phone_number: { type: Number, required: true },
   email: { type: String, required: true },
-  // password: { type: String, required: true },
-  // date_of_birth: { type: Date, required: true },
+  password: { type: String, required: true },
+  date_of_birth: { type: Date, required: true },
   gender: { type: String, required: true },
   degrees: { type: String, required: true },
   registration_number: { type: String, required: true },
@@ -44,9 +44,17 @@ const docSchema = new mongoose.Schema<Doctors>({
   state: { type: String, required: true },
   country: { type: String, required: true },
   zip_code: { type: Number, required: true },
-  // photoUrl: { type: String, required: true },
+  isApproved: { type: Boolean, required: true, default: true },
+  photo_Url: { type: String, required: true },
 });
 
-const Doctor = mongoose.model<Doctors>("doctor", docSchema);
+docSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 8);
+  }
+  next();
+});
+
+const Doctor = mongoose.model<DoctorType>("Doctor", docSchema);
 
 export default Doctor;
