@@ -65,6 +65,9 @@ router.post(
       if (!hospital) {
         return res.status(400).json({ message: "Hospital not found" });
       }
+      if(!hospital.isVerified){
+        return res.status(400).json({ message: "Hospital not yet verified"});
+      }
       const isMatch = await bcrypt.compare(password, hospital.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });

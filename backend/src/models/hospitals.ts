@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-export type hospital = {
+export type HospitalType = {
   _id: string;
   hospital_name: string;
   phone_number_1: number;
@@ -42,6 +42,6 @@ hospitalSchema.pre("save", async function (next) {
   next();
 });
 
-const Hospital = mongoose.model("Hospital", hospitalSchema);
+const Hospital = mongoose.model<HospitalType>("Hospital", hospitalSchema);
 
 export default Hospital;

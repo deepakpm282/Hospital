@@ -38,7 +38,7 @@ const HosDetails = () => {
             phone number *
           </label>
           <input
-            type="text"
+            type="number"
             placeholder="Enter your phone_number_1"
             className="mt-1 p-2 border rounded w-full"
             {...register('phone_number_1', {
@@ -60,7 +60,7 @@ const HosDetails = () => {
             Alternate number *
           </label>
           <input
-            type="text"
+            type="number"
             placeholder="Enter your phone_number_2"
             className="mt-1 p-2 border rounded w-full"
             {...register('phone_number_2', {
@@ -186,7 +186,7 @@ const HosDetails = () => {
             Postal Code *
           </label>
           <input
-            type="number"
+            type="text"
             placeholder="Enter your zip_code"
             className="mt-1 p-2 border rounded w-full"
             {...register('zip_code', {

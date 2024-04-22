@@ -26,12 +26,11 @@ export const Hospital_SignUp = async (formData: Hospital_SignUp_Data) => {
   return responseBody;
 };
 
-export const Hospital_Register = async (HosFormData: FormData) => {
-  console.log(HosFormData)
+export const Hospital_Register = async (formData: FormData) => {
   const response = await fetch(`${API_BASE_URL}/api/hospitals/hospital-register`, {
     method: 'POST',
     credentials: 'include', // to add http cookie while we are registering
-    body: HosFormData,
+    body: formData,
    });
   const body = await response.json();
   if (!response.ok) {
