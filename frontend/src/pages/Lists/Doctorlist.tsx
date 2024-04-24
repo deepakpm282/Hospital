@@ -3,6 +3,8 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { Link } from 'react-router-dom';
 
 const Doctorlist = () => {
+  const searchParams = new URLSearchParams(location.search);
+  const hospital_id = searchParams.get('id');
   const acceptRequest = () => {
     console.log("Request accepted");
   };
@@ -56,7 +58,7 @@ const Doctorlist = () => {
           <button className="px-3 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">
             Search
           </button>
-          <Link to='/Components/Doctor/Adddoctor'>
+          <Link to= {`/Components/Doctor/Adddoctor?id=${hospital_id}`}>
           <button className="px-3 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-200">
             Add Doctor
           </button>

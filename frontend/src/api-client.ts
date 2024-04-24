@@ -1,5 +1,6 @@
 import { Hospital_Login_Data } from './pages/Authentication/SignIn';
 import { Hospital_SignUp_Data } from './pages/Authentication/SignUp';
+import { DoctorType } from '../../backend/src/models/doctor';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -17,9 +18,6 @@ export const Hospital_SignUp = async (formData: Hospital_SignUp_Data) => {
   );
 
   const responseBody = await response.json();
-
-  console.log('response', responseBody);
-
   if (!response.ok) {
     throw new Error(responseBody.message);
   }
@@ -27,11 +25,14 @@ export const Hospital_SignUp = async (formData: Hospital_SignUp_Data) => {
 };
 
 export const Hospital_Register = async (formData: FormData) => {
-  const response = await fetch(`${API_BASE_URL}/api/hospitals/hospital-register`, {
-    method: 'POST',
-    credentials: 'include', // to add http cookie while we are registering
-    body: formData,
-   });
+  const response = await fetch(
+    `${API_BASE_URL}/api/hospitals/hospital-register`,
+    {
+      method: 'POST',
+      credentials: 'include', // to add http cookie while we are registering
+      body: formData,
+    },
+  );
   const body = await response.json();
   if (!response.ok) {
     throw new Error(body.message);
@@ -67,6 +68,16 @@ export const Hospital_Login = async (formData: Hospital_Login_Data) => {
     throw new Error(body.message);
   }
   return body;
+};
+
+export const fetchDocData = async (): Promise<DoctorType[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/hospitals/get-doctors`, {
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching details");
+  }
+  return response.json();
 };
 
 export const validateToken = async () => {

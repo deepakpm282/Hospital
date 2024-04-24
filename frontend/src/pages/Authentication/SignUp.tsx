@@ -24,7 +24,6 @@ const SignUp: React.FC = () => {
 
   const mutation = useMutation(apiClient.Hospital_SignUp, {
     onSuccess: (data) => {
-      console.log('[mutation] data', data);
       const hospitalId = data.id; // Assuming the ID is received in the response
       showToast({ message: 'Fill out the details!', type: 'SUCCESS' });
       navigate(`/components/Forms/HosRegistration/HosRegForm?id=${hospitalId}`);

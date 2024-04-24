@@ -372,7 +372,7 @@ const EditDoctor: React.FC<EditDocProps> = ({ onSave, onCancel }) => {
             <button
               type="button"
               className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-              onClick={handleCancel}
+              // onClick={handleCancel}
             >
               Cancel
             </button>

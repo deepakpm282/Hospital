@@ -6,7 +6,7 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
+import HospitalDash from './pages/Dashboard/hospitalDash';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
@@ -56,12 +56,12 @@ function App() {
               <SignUp />
             </>
           }
-        />
+        />  
         <Route
-          path="/pages/Dashboard/ECommerce"
+          path="/pages/Dashboard/hospitalDash"
           element={
             <>
-              <ECommerce />
+              <HospitalDash />
             </>
           }
         />

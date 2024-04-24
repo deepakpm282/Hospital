@@ -65,8 +65,8 @@ router.post(
       if (!hospital) {
         return res.status(400).json({ message: "Hospital not found" });
       }
-      if(!hospital.isVerified){
-        return res.status(400).json({ message: "Hospital not yet verified"});
+      if (!hospital.isVerified) {
+        return res.status(400).json({ message: "Hospital not yet verified" });
       }
       const isMatch = await bcrypt.compare(password, hospital.password);
       if (!isMatch) {
@@ -83,7 +83,10 @@ router.post(
         secure: process.env.NODE_ENV === "production",
         maxAge: 86400000,
       });
-      res.status(200).json({ Token: token });
+      res.status(200).json({
+        Token: token,
+        Hospital_id: hospital._id,
+      });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Something went wrong" });

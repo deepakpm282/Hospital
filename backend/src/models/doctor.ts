@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 export type DoctorType = {
   _id: string;
   DocId: string;
+  associated_hos_id: string;
   first_name: string;
   last_name: string;
   phone_number: number;
@@ -16,7 +17,7 @@ export type DoctorType = {
   year_of_registration: number;
   state_medical_council: string;
   experience: number;
-  address: string,
+  address: string;
   city: string;
   state: string;
   country: string;
@@ -25,8 +26,9 @@ export type DoctorType = {
   isApproved: boolean;
 };
 
-const docSchema = new mongoose.Schema<DoctorType>({ 
+const docSchema = new mongoose.Schema<DoctorType>({
   DocId: { type: String, required: true },
+  associated_hos_id: { type: String, required: true},
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   phone_number: { type: Number, required: true },
@@ -48,7 +50,7 @@ const docSchema = new mongoose.Schema<DoctorType>({
   photo_Url: { type: String, required: true },
 });
 
-docSchema.pre("save", async function (next) {
+docSchema.pre("save", async function (next){
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 8);
   }

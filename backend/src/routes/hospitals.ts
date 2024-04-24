@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 import validateHospitalLogin from "../middlewares/validateHospitalLogins";
-import Hospital, { HospitalType } from "../models/hospitals";
+import Hospital from "../models/hospitals";
 import validateHos from "../middlewares/validateHospitalRegistration";
 import verifyToken from "../middlewares/auth";
 import multer from 'multer';

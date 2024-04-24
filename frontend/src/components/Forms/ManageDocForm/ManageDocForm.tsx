@@ -1,5 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import DocDetilsSections from './DocDetilsSections';
+import { useLocation } from 'react-router-dom';
 
 export type DoctorFormData = {
   first_name: string;
@@ -20,6 +21,7 @@ export type DoctorFormData = {
   country: string;
   zip_code: string;
   photo: FileList;
+  associated_hos_id: string;
 };
 
 type props = {
@@ -30,8 +32,13 @@ type props = {
 const DocFormData = ({ onSave, isLoading }: props) => {
   const formMethods = useForm<DoctorFormData>();
   const { handleSubmit } = formMethods;
+  const location = useLocation()
 
   const onSubmit = handleSubmit((formDataJson: DoctorFormData) => {
+
+    const searchParams = new URLSearchParams(location.search);
+    const associated_hos_id = searchParams.get('id');
+
     const formData = new FormData();
     formData.append('first_name', formDataJson.first_name);
     formData.append('last_name', formDataJson.last_name);
@@ -62,6 +69,7 @@ const DocFormData = ({ onSave, isLoading }: props) => {
     if (formDataJson.photo && formDataJson.photo.length > 0) {
       formData.append('photo', formDataJson.photo[0]);
     }
+    formData.append('associated_hos_id', associated_hos_id as string)
     onSave(formData);
   });
 

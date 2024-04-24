@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, useLocation, Link, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import logo from '../../images/nillq-favicon-white.png';
 import { useMutation, useQueryClient } from 'react-query';
@@ -177,7 +177,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill=""
                           />
                         </svg>
-                        <NavLink to="/pages/Dashboard/ECommerce">
+                        <NavLink to="/pages/Dashboard/hospitalDash">
                           Dashboard
                         </NavLink>
                       </NavLink>
@@ -251,10 +251,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 }
               >
                 {(handleClick, open) => {
+                  const searchParams = new URLSearchParams(location.search);
+                  const hospital_id = searchParams.get('id');
                   return (
                     <React.Fragment>
                       <NavLink
-                        to="/Lists/Doctorlist"
+                        to={`/Lists/Doctorlist?id=${hospital_id}`}
                         className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                           (pathname === '/' ||
                             pathname.includes('Doctorlist')) &&

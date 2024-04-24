@@ -71,14 +71,12 @@ router.post(
   verifyDoc,
   upload.single("photo"),
   async (req: Request, res: Response) => {
-    console.log(req.body)
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       console.log(errors.array());
       return res.status(400).json({ message: errors.array() });
     }
     try {
-      console.log(req.body);
       const existingDoc = await Doctor.findOne({ email: req.body.email });
 
       if (existingDoc) {
@@ -109,6 +107,7 @@ router.post(
       );
       newDoc.isApproved = true;
       // Save the new doctor document
+      console.log(newDoc)
       const currDoc = new Doctor(newDoc);
       await currDoc.save();
 

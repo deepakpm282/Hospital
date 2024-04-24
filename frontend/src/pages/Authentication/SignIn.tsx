@@ -26,10 +26,11 @@ const SignIn: React.FC = () => {
   });
 
   const mutation = useMutation(apiClient.Hospital_Login, {
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      const Hospital_id = data.Hospital_id;
       showToast({ message: 'Sign in successfull', type: 'SUCCESS' });
       await queryClient.invalidateQueries('validateToken');
-      navigate('/pages/Dashboard/hospitalDash');
+      navigate(`/pages/Dashboard/hospitalDash?id=${Hospital_id}`);
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: 'ERROR' });
