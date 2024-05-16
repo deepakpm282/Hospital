@@ -24,7 +24,7 @@ const SignUp: React.FC = () => {
 
   const mutation = useMutation(apiClient.Hospital_SignUp, {
     onSuccess: (data) => {
-      const hospitalId = data.id; // Assuming the ID is received in the response
+      const hospitalId = data.id; // ID is received in the response
       showToast({ message: 'Fill out the details!', type: 'SUCCESS' });
       navigate(`/components/Forms/HosRegistration/HosRegForm?id=${hospitalId}`);
     },
@@ -33,7 +33,6 @@ const SignUp: React.FC = () => {
     },
   });
   const onSubmit = handleSubmit((data) => {
-    console.log('data', data);
     mutation.mutate(data);
   });
 

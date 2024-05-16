@@ -1,11 +1,24 @@
 import { useFormContext } from 'react-hook-form';
 import { DoctorFormData } from './ManageDocForm';
+// import { MouseEvent } from 'react';
 
 const DocDetails = () => {
   const {
     register,
     formState: { errors },
+    // watch,
+    // setValue,
   } = useFormContext<DoctorFormData>();
+
+  // const existingImageUrl = watch('photo_Url');
+
+  // const handleDelete = (
+  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  // ) => {
+  //   event.preventDefault();
+  //   setValue('photo_Url', ''); // Reset the value of 'photo' field to remove the existing image
+  // };
+
   return (
     <div className="container mx-auto mt-05">
       <div className="flex">
@@ -20,8 +33,8 @@ const DocDetails = () => {
             className="mt-1 p-2 border rounded w-full"
             {...register('first_name', {
               required: 'first_name is required.!',
-              minLength: {
-                value: 6,
+              maxLength: {
+                value: 10,
                 message: 'first_name must be at least 6 characters..',
               },
             })}
@@ -334,6 +347,22 @@ const DocDetails = () => {
             <label htmlFor="photo" className="block text-sm font-medium">
               Photo
             </label>
+            {/* <div className="border rounded p-4 flex flex-col gap-4">
+              {existingImageUrl && (
+                <div className="relative-group">
+                  <img
+                    src={existingImageUrl}
+                    className="min-h-full object-cover"
+                  />
+                  <button
+                    onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(event)}
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 text-white"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div> */}
             <input
               type="file"
               accept="image/*"
@@ -350,40 +379,6 @@ const DocDetails = () => {
             )}
           </div>
         </div>
-        {/* <div className="flex-grow">
-                <div>
-                    <label className="block text-sm font-medium">Status *</label>
-                    <div className="flex items-center gap-3 p-3 ">
-                    <label htmlFor="active" className="inline-flex items-center">
-                        <input
-                        type="radio"
-                        id="active"
-                        name="status"
-                        value="Active"
-                        checked={formData.status === 'Active'}
-                        onChange={handleChange}
-                        className="form-radio h-4 w-4 text-green"
-                        />
-                        <span className="ml-2">Active</span>
-                    </label>
-                    <label
-                        htmlFor="inactive"
-                        className="inline-flex items-center"
-                    >
-                        <input
-                        type="radio"
-                        id="inactive"
-                        name="status"
-                        value="Inactive"
-                        checked={formData.status === 'Inactive'}
-                        onChange={handleChange}
-                        className="form-radio h-4 w-4 text-green"
-                        />
-                        <span className="ml-2">Inactive</span>
-                    </label>
-                    </div>
-                </div>
-                </div> */}
       </div>
     </div>
   );

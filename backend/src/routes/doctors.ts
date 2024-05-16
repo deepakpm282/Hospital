@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import multer from "multer"; // npm i --save-dev @types/multer do this after installing multer
 import cloudinary from "cloudinary";
-import { DoctorType } from "../models/doctor";
+import { DoctorType } from "../shared/types";
 import verifyToken from "../middlewares/auth";
 import verifyDoc from "../middlewares/verifyDoc";
 import generateDoctorId from "../middlewares/generateID";

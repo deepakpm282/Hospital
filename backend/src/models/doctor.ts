@@ -1,30 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-
-export type DoctorType = {
-  _id: string;
-  DocId: string;
-  associated_hos_id: string;
-  first_name: string;
-  last_name: string;
-  phone_number: number;
-  email: string;
-  password: string;
-  date_of_birth: Date;
-  gender: string;
-  degrees: string;
-  registration_number: string;
-  year_of_registration: number;
-  state_medical_council: string;
-  experience: number;
-  address: string;
-  city: string;
-  state: string;
-  country: string;
-  zip_code: number;
-  photo_Url: string;
-  isApproved: boolean;
-};
+import { DoctorType } from "../shared/types";
 
 const docSchema = new mongoose.Schema<DoctorType>({
   DocId: { type: String, required: true },

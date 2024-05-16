@@ -21,7 +21,7 @@ import HospitalRegistration from './components/Forms/HosRegistration/HosRegForm'
 import Appoint from './components/Tables/Appoint';
 import DeptProfile from './components/Hospital/DeptProfile';
 // import EditDept from './components/Hospital/EditDept';
-// import EditDoctor from './components/Doctor/EditDoctor';
+import EditDoctor from './components/Doctor/EditDoctor';
 import HosDash from './pages/Dashboard/hospitalDash';
 
 function App() {
@@ -105,7 +105,7 @@ function App() {
             </>
           }
         />
-                <Route
+        <Route
           path="/Lists/Doctorlist"
           element={
             <>
@@ -170,14 +170,14 @@ function App() {
             </>
           }
         />
-        {/* <Route
-          path="/components/Doctor/EditDoctor"
+        <Route
+          path="/components/Doctor/EditDoctor/:DocId"
           element={
             <>
               <EditDoctor />
             </>
           }
-        /> */}
+        />
         <Route
           path="/components/Doctor/Doctorprofile"
           element={

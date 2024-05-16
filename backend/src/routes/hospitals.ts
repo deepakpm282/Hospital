@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, response } from "express";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 import validateHospitalLogin from "../middlewares/validateHospitalLogins";
@@ -6,6 +6,7 @@ import Hospital from "../models/hospitals";
 import validateHos from "../middlewares/validateHospitalRegistration";
 import verifyToken from "../middlewares/auth";
 import multer from 'multer';
+import Doctor from "../models/doctor";
 
 // Set up multer middleware to handle multipart form data
 const upload = multer();
@@ -96,5 +97,69 @@ router.post(
     }
   }
 );
+
+router.get("/get-doctor", verifyToken, async (req: Request, res: Response) => {
+  try {
+    // Find the hospital based on the userId
+    const hospital = await Hospital.findById(req.query.id);
+    if (!hospital) {
+      return res.status(404).json({ message: "Hospital not found" });
+    }
+
+    // Find doctors associated with the hospital
+    const doctors = await Doctor.find({ associated_hos_id: req.params.id });
+    // Send the list of doctors associated with the hospital as the response
+    res.json(doctors);
+
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching doctors" });
+  }
+})
+
+
+router.get("/get-allDocs", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const doctors = await Doctor.find().select('_id first_name last_name');
+    if (!doctors) {
+      return res.status(404).json({ message: "No Doctors" });
+    }
+    // Send the list of doctors associated with the hospital as the response
+    res.json(doctors);
+
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching doctors" });
+  }
+})
+
+router.get("/get-HosName", verifyToken, async(req: Request, res: Response) => {
+  try {
+    // Find the hospital based on the userId
+    const hospital = await Hospital.findById(req.query.id);
+    if (!hospital) {
+      return res.status(404).json({ message: "Hospital not found" });
+    }
+    // Here get the address and name of the hospital 
+    const { hospital_name, address } = hospital;
+
+    // Send the address and name  associated with the hospital_id as the response
+    res.status(200).json([{ address, hospital_name}]);
+
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching Hospital Details" });
+  }
+})
+
+router.get("/:id", verifyToken, async(req: Request, res: Response) => {
+  const id = req.params.id.toString();
+  try {
+    const doctor = await Doctor.findOne({
+      _id: id,
+      userId: req.userId,
+    });
+    res.json(doctor)
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching Doctor" });
+  }
+})
 
 export default router;

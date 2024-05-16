@@ -1,23 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-
-export type HospitalType = {
-  _id: string;
-  hospital_name: string;
-  phone_number_1: number;
-  phone_number_2: number;
-  email: string;
-  password: string;
-  confirm_password: string;
-  date_established: string;
-  unique_identification_number: number;
-  address: string;
-  city: string;
-  state: string;
-  country: string;
-  zip_code: string;
-  isVerified: boolean;
-};
+import { HospitalType } from "../shared/types";
 
 const hospitalSchema = new mongoose.Schema({
   hospital_name: { type: String, unique: false },

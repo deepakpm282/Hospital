@@ -37,6 +37,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   };
 
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const hospital_id = searchParams.get('id');
   const { pathname } = location;
 
   const trigger = useRef<any>(null);
@@ -224,7 +226,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         </svg>
 
                         <NavLink
-                          to="/components/Tables/Appoint"
+                          to= {`/components/Tables/Appoint?id=${hospital_id}`}
                           className={`group relative flex items-center rounded-sm py-2  font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                             pathname.includes('Appoint') &&
                             'bg-graydark dark:bg-meta-4'
@@ -251,8 +253,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 }
               >
                 {(handleClick, open) => {
-                  const searchParams = new URLSearchParams(location.search);
-                  const hospital_id = searchParams.get('id');
                   return (
                     <React.Fragment>
                       <NavLink

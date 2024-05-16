@@ -1,6 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import DocDetilsSections from './DocDetilsSections';
-import { useLocation } from 'react-router-dom';
+import DocDetilsSections from '../ManageDocForm/DocDetilsSections';
+import { DoctorType } from '../../../../../backend/src/shared/types';
+import { useEffect } from 'react';
 
 export type DoctorFormData = {
   first_name: string;
@@ -22,25 +23,32 @@ export type DoctorFormData = {
   zip_code: string;
   photo: FileList;
   photo_Url: string;
-  associated_hos_id: string;
 };
 
 type props = {
+  doctor: DoctorType
   onSave: (docFormData: FormData) => void;
   isLoading: boolean;
 };
 
-const DocFormData = ({ onSave, isLoading }: props) => {
+const DocFormData = ({ onSave, isLoading, doctor }: props) => {
   const formMethods = useForm<DoctorFormData>();
-  const { handleSubmit } = formMethods;
-  const location = useLocation()
+  const { handleSubmit, reset } = formMethods;
 
+  useEffect(() => {
+    if(doctor && doctor.date_of_birth instanceof Date){
+      console.log("Is inside")
+        const doctorCopy = {
+            ...doctor,
+            date_of_birth: doctor.date_of_birth.toISOString().split('T')[0], // Convert Date object to string
+            registration_number: Number(doctor.registration_number), // Convert string to number
+            zip_code: doctor.zip_code.toString(), // Convert number to string
+          };
+        reset(doctorCopy);
+    }
+  }, [doctor, reset])
 
   const onSubmit = handleSubmit((formDataJson: DoctorFormData) => {
-
-    const searchParams = new URLSearchParams(location.search);
-    const associated_hos_id = searchParams.get('id');
-
     const formData = new FormData();
     formData.append('first_name', formDataJson.first_name);
     formData.append('last_name', formDataJson.last_name);
@@ -71,14 +79,13 @@ const DocFormData = ({ onSave, isLoading }: props) => {
     if (formDataJson.photo && formDataJson.photo.length > 0) {
       formData.append('photo', formDataJson.photo[0]);
     }
-    formData.append('associated_hos_id', associated_hos_id as string)
     onSave(formData);
   });
 
   return (
     <FormProvider {...formMethods}>
       <form className="space-y-4" onSubmit={onSubmit}>
-        <DocDetilsSections />
+        <DocDetilsSections/>
         <span className="flex justify-end">
           <button
             disabled={isLoading}
