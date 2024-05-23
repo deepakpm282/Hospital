@@ -5,19 +5,22 @@ import * as apiClient from '../../api-client';
 import { useForm } from 'react-hook-form';
 import { useAppContext } from '../../contexts/AppContext';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export type Appointment_Data = {
+  hospital_id: string;
   hospital_name: string;
   slot_date: Date;
   time_slot: string;
   location: string;
   doctor_name: string;
   token: number;
-  status: boolean;
 };
 
 const Appointment: React.FC = () => {
+  const [fromTime, setFromTime] = useState({ hour: 1, ampm: 'AM' });
+  const [toTime, setToTime] = useState({ hour: 1, ampm: 'AM' });
+
   const navigate = useNavigate();
   const { showToast } = useAppContext();
   const {
@@ -52,7 +55,7 @@ const Appointment: React.FC = () => {
       setValue('hospital_name', HosData[0].hospital_name);
       setValue('location', HosData[0].address);
     }
-  },[HosData, setValue]);
+  }, [HosData, setValue]);
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -65,7 +68,12 @@ const Appointment: React.FC = () => {
       showToast({ message: error.message, type: 'ERROR' });
     },
   });
+
   const onSubmit = handleSubmit((data) => {
+    data.time_slot = `${fromTime.hour}${fromTime.ampm} - ${toTime.hour}${toTime.ampm}`;
+    if(hospital_id){
+      data.hospital_id = hospital_id
+    }
     mutation.mutate(data);
   });
 
@@ -76,11 +84,8 @@ const Appointment: React.FC = () => {
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="flex">
             <div className="flex-grow mr-4">
-              <label
-                htmlFor="hospital_name"
-                className="block text-sm font-medium"
-              >
-                Hopsital *
+              <label htmlFor="hospital_name" className="block text-sm font-medium">
+                Hospital *
               </label>
               <input
                 type="text"
@@ -92,23 +97,19 @@ const Appointment: React.FC = () => {
               />
             </div>
             <div className="flex-grow">
-              <label
-                htmlFor="doctor_name"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="doctor_name" className="block text-sm font-medium">
                 Name of the Doctor *
               </label>
               <select
                 className="mt-1 p-2 border rounded w-full"
-                {...register('doctor_name')}
-                required
+                {...register('doctor_name', { required: 'Doctor name is required' })}
               >
-              <option value="">Select Doctor</option>
-              {allDocs?.map((doctor) => (
-                <option key={doctor._id} value={`${doctor.first_name} ${doctor.last_name}`}>
-                  {`${doctor.first_name} ${doctor.last_name}`}
-                </option>
-              ))}
+                <option value="">Select Doctor</option>
+                {allDocs?.map((doctor) => (
+                  <option key={doctor._id} value={`${doctor.first_name} ${doctor.last_name}`}>
+                    {`${doctor.first_name} ${doctor.last_name}`}
+                  </option>
+                ))}
               </select>
               {errors.doctor_name && (
                 <span className="text-red-500">
@@ -125,13 +126,13 @@ const Appointment: React.FC = () => {
               </label>
               <input
                 type="text"
-                className= "mt-1 p-2 border rounded w-full cursor-not-allowed"
+                className="mt-1 p-2 border rounded w-full cursor-not-allowed"
                 value={HosData && HosData[0] ? HosData[0].address : ''}
                 readOnly
               />
             </div>
           </div>
-          <div className="flex">
+          <div className="flex gap-4">
             <div className="flex-grow mr-4">
               <label htmlFor="slot_date" className="block text-sm font-medium">
                 Select Date *
@@ -140,34 +141,79 @@ const Appointment: React.FC = () => {
                 type="date"
                 min={today}
                 className="mt-1 p-2 border rounded w-full"
-                required
+                {...register('slot_date', { required: 'Date is required' })}
               />
               {errors.slot_date && (
                 <span className="text-red-500">{errors.slot_date.message}</span>
               )}
             </div>
-            <div className="flex-grow  mr-4 ">
-              <label htmlFor="time_slot" className="block text-sm font-medium ">
-                Select time_slot *
-              </label>
-              <input
-                type="time_slot"
-                className="mt-1 p-2 border rounded w-[100%]"
-                required
-              />
-            </div>
 
-            <div className="flex-grow ">
+            <div className="flex-grow time-slot-selector">
+              <div className="flex items-center">
+                <div className="mr-4">
+                  <label htmlFor="from" className="block text-sm font-medium">
+                    From *
+                  </label>
+                  <div className="flex space-x-2">
+                    <input
+                      type="number"
+                      id="from"
+                      min="1"
+                      max="12"
+                      className="mt-1 p-2 border rounded w-15"
+                      value={fromTime.hour}
+                      onChange={(e) => setFromTime({ ...fromTime, hour: parseInt(e.target.value) })}
+                    />
+                    <select
+                      className="mt-1 p-2 border rounded w-10 appearance-none"
+                      value={fromTime.ampm}
+                      onChange={(e) => setFromTime({ ...fromTime, ampm: e.target.value })}
+                    >
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="to" className="block text-sm font-medium">
+                    To *
+                  </label>
+                  <div className="flex space-x-2">
+                    <input
+                      type="number"
+                      id="to"
+                      min="1"
+                      max="12"
+                      className="mt-1 p-2 border rounded w-15"
+                      value={toTime.hour}
+                      onChange={(e) => setToTime({ ...toTime, hour: parseInt(e.target.value) })}
+                    />
+                    <select
+                      className="mt-1 p-2 border rounded w-10 appearance-none"
+                      value={toTime.ampm}
+                      onChange={(e) => setToTime({ ...toTime, ampm: e.target.value })}
+                    >
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex-grow">
               <label htmlFor="token" className="block text-sm font-medium ">
-                Token Number *
+                Number of Tokens *
               </label>
               <input
                 type="number"
                 id="token"
-                name="token"
                 className="mt-1 p-2 border rounded w-full"
-                required
+                min="1"
+                {...register('token', { required: 'Token number is required'})}
               />
+              {errors.token && (
+                <span className="text-red-500">{errors.token.message}</span>
+              )}
             </div>
           </div>
           <div className="flex justify-center">
@@ -181,6 +227,7 @@ const Appointment: React.FC = () => {
               <button
                 type="button"
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                onClick={() => navigate(-1)}
               >
                 Cancel
               </button>

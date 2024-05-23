@@ -1,8 +1,10 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 const Deptlist = () => {
-
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const hospital_id = searchParams.get('id');
 
   
   const acceptRequest = () => {
@@ -48,7 +50,7 @@ const Deptlist = () => {
           <button className="px-3 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">
             Search
           </button>
-          <Link to="/components/Hospital/AddDept">
+          <Link to={`/components/Hospital/AddDept?id=${hospital_id}`}>
           <button className="px-3 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 focus:outline-none focus:ring focus:ring-blue-200">
             Add Department
           </button>

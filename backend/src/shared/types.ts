@@ -43,11 +43,11 @@ export type HospitalType = {
 
 export type AppointmentType = {
   _id: string;
+  Hospital_id: string;
   hospital_name: string;
   slot_date: Date;
   time_slot: string;
   location: string;
   doctor_name: string;
   token: number;
-  status: boolean;
 };

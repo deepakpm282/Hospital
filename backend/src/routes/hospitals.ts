@@ -7,6 +7,7 @@ import validateHos from "../middlewares/validateHospitalRegistration";
 import verifyToken from "../middlewares/auth";
 import multer from 'multer';
 import Doctor from "../models/doctor";
+import Appointment from "../models/appointments";
 
 // Set up multer middleware to handle multipart form data
 const upload = multer();
@@ -65,7 +66,6 @@ router.post(
       });
 
       if (hospital) {
-        console.log(hospital.email)
         return res.status(400).json({
           message: "Hospital already exists",
         });
@@ -74,7 +74,6 @@ router.post(
       const { email, password } = req.body;
 
       hospital = await Hospital.create({ email, password });
-      console.log("Hospital added >>", hospital)
       const token = jwt.sign(
         { UserId: hospital.id },
         process.env.JWT_SECRET_KEY as string,
@@ -146,6 +145,33 @@ router.get("/get-HosName", verifyToken, async(req: Request, res: Response) => {
 
   } catch (error) {
     res.status(500).json({ message: "Error fetching Hospital Details" });
+  }
+})
+
+router.post("/appointment-booking", verifyToken, async(req: Request, res: Response) => {
+  try {
+    const Hos = await Hospital.findById(req.body.hospital_id);
+    if(!Hos){
+      return res.status(404).json({ message: "Not Booking form a verified hospital"})
+    }
+    const { hospital_id, slot_date, time_slot, doctor_name, token, } = req.body;
+
+    const appointment = new Appointment({
+      hospital_name: Hos.hospital_name,
+      Hospital_id: hospital_id,
+      slot_date,
+      time_slot,
+      location: Hos.address,
+      doctor_name,
+      token,
+    })
+
+    await appointment.save();
+
+    res.status(200).json({message: "Appointment saved successfully", appointment})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Something went wrong"})
   }
 })
 

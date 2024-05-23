@@ -16,7 +16,7 @@ import Deptlist from './pages/Lists/Deptlist';
 import DoctorList from './pages/Lists/Doctorlist';
 import Adddoctor from './components/Doctor/Adddoctor';
 import Doctorprofile from './components/Doctor/Doctorprofile';
-// import AddDept from './components/Hospital/AddDept';
+import AddDept from './components/Hospital/AddDept';
 import HospitalRegistration from './components/Forms/HosRegistration/HosRegForm'
 import Appoint from './components/Tables/Appoint';
 import DeptProfile from './components/Hospital/DeptProfile';
@@ -194,14 +194,14 @@ function App() {
           </>
         }
         />
-        {/* <Route
+        <Route
           path="/components/Hospital/AddDept"
           element={
             <>
               <AddDept />
             </>
           }
-        /> */}
+        />
         <Route
           path="/pages/Dashboard/hospitalDash"
           element={
