@@ -14,6 +14,7 @@ export type Appointment_Data = {
   time_slot: string;
   location: string;
   doctor_name: string;
+  doctor_id: string;
   token: number;
 };
 
@@ -45,10 +46,7 @@ const Appointment: React.FC = () => {
     },
   );
 
-  const { data: allDocs } = useQuery(
-    ['fetchDoctors'],
-    apiClient.fetchDoctors,
-  );
+  const { data: allDocs } = useQuery(['fetchDoctors'], apiClient.fetchDoctors);
 
   useEffect(() => {
     if (HosData) {
@@ -71,9 +69,13 @@ const Appointment: React.FC = () => {
 
   const onSubmit = handleSubmit((data) => {
     data.time_slot = `${fromTime.hour}${fromTime.ampm} - ${toTime.hour}${toTime.ampm}`;
-    if(hospital_id){
-      data.hospital_id = hospital_id
-    }
+    const selected_doc = allDocs?.find(
+      (doctor) =>
+        `${doctor.first_name} ${doctor.last_name}` === data.doctor_name,
+    );
+    if (hospital_id) data.hospital_id = hospital_id;
+    if (selected_doc) data.doctor_id = selected_doc._id;
+    console.log("Appointment Data => ",data);
     mutation.mutate(data);
   });
 
@@ -84,7 +86,10 @@ const Appointment: React.FC = () => {
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="flex">
             <div className="flex-grow mr-4">
-              <label htmlFor="hospital_name" className="block text-sm font-medium">
+              <label
+                htmlFor="hospital_name"
+                className="block text-sm font-medium"
+              >
                 Hospital *
               </label>
               <input
@@ -97,16 +102,24 @@ const Appointment: React.FC = () => {
               />
             </div>
             <div className="flex-grow">
-              <label htmlFor="doctor_name" className="block text-sm font-medium">
+              <label
+                htmlFor="doctor_name"
+                className="block text-sm font-medium"
+              >
                 Name of the Doctor *
               </label>
               <select
                 className="mt-1 p-2 border rounded w-full"
-                {...register('doctor_name', { required: 'Doctor name is required' })}
+                {...register('doctor_name', {
+                  required: 'Doctor name is required',
+                })}
               >
                 <option value="">Select Doctor</option>
                 {allDocs?.map((doctor) => (
-                  <option key={doctor._id} value={`${doctor.first_name} ${doctor.last_name}`}>
+                  <option
+                    key={doctor._id}
+                    value={`${doctor.first_name} ${doctor.last_name}`}
+                  >
                     {`${doctor.first_name} ${doctor.last_name}`}
                   </option>
                 ))}
@@ -162,12 +175,19 @@ const Appointment: React.FC = () => {
                       max="12"
                       className="mt-1 p-2 border rounded w-15"
                       value={fromTime.hour}
-                      onChange={(e) => setFromTime({ ...fromTime, hour: parseInt(e.target.value) })}
+                      onChange={(e) =>
+                        setFromTime({
+                          ...fromTime,
+                          hour: parseInt(e.target.value),
+                        })
+                      }
                     />
                     <select
                       className="mt-1 p-2 border rounded w-10 appearance-none"
                       value={fromTime.ampm}
-                      onChange={(e) => setFromTime({ ...fromTime, ampm: e.target.value })}
+                      onChange={(e) =>
+                        setFromTime({ ...fromTime, ampm: e.target.value })
+                      }
                     >
                       <option value="AM">AM</option>
                       <option value="PM">PM</option>
@@ -186,12 +206,16 @@ const Appointment: React.FC = () => {
                       max="12"
                       className="mt-1 p-2 border rounded w-15"
                       value={toTime.hour}
-                      onChange={(e) => setToTime({ ...toTime, hour: parseInt(e.target.value) })}
+                      onChange={(e) =>
+                        setToTime({ ...toTime, hour: parseInt(e.target.value) })
+                      }
                     />
                     <select
                       className="mt-1 p-2 border rounded w-10 appearance-none"
                       value={toTime.ampm}
-                      onChange={(e) => setToTime({ ...toTime, ampm: e.target.value })}
+                      onChange={(e) =>
+                        setToTime({ ...toTime, ampm: e.target.value })
+                      }
                     >
                       <option value="AM">AM</option>
                       <option value="PM">PM</option>
@@ -209,7 +233,7 @@ const Appointment: React.FC = () => {
                 id="token"
                 className="mt-1 p-2 border rounded w-full"
                 min="1"
-                {...register('token', { required: 'Token number is required'})}
+                {...register('token', { required: 'Token number is required' })}
               />
               {errors.token && (
                 <span className="text-red-500">{errors.token.message}</span>

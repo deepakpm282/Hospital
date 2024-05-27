@@ -2,13 +2,14 @@ import mongoose from "mongoose";
 import { AppointmentType } from "../shared/types";
 
 const AppointSchema = new mongoose.Schema({
-    Hospital_id: { type: String, unique: true },
-    hospital_name: { type: String, unique: false },
-    slot_date: { type: Date, unique: false },
-    time_slot: { type: String, unique: false },
-    location: { type: String, unique: false },
-    doctor_name: { type: String, unique: false },
-    token: { type: Number, unique: false },
+    Hospital_Id: { type: String, unique: false },
+    Hospital_Name: { type: String, unique: false },
+    Slot_Date: { type: Date, unique: false },
+    Time_Slot: { type: String, unique: false },
+    Location: { type: String, unique: false },
+    Doctor_Name: { type: String, unique: false },
+    Doctor_Id: { type: String, unique: false},
+   Token: { type: Number, unique: false },
 });
 
 AppointSchema.pre("save", async function (next) {

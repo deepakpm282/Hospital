@@ -40,7 +40,7 @@ router.post("/doctor-login", validate, async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 86400000,
     });
-    res.status(200).json({ Token: token });
+    res.status(200).json({ Token: token, Doctor_Id: doctor._id });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });

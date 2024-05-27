@@ -1,6 +1,5 @@
 
 import { check } from "express-validator";
-import { Request, Response } from "express";
 
 export const register = [
   check("email", "Email is required").isEmail(),

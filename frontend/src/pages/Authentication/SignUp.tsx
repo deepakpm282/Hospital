@@ -20,7 +20,8 @@ const SignUp: React.FC = () => {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<Hospital_SignUp_Data>();
+  } = useForm<Hospital_SignUp_Data>({ mode: 'all'
+  });
 
   const mutation = useMutation(apiClient.Hospital_SignUp, {
     onSuccess: (data) => {

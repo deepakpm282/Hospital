@@ -43,11 +43,39 @@ export type HospitalType = {
 
 export type AppointmentType = {
   _id: string;
-  Hospital_id: string;
-  hospital_name: string;
-  slot_date: Date;
-  time_slot: string;
-  location: string;
-  doctor_name: string;
-  token: number;
+  Hospital_Id: string;
+  Hospital_Name: string;
+  Slot_Date: Date;
+  Time_Slot: string;
+  Location: string;
+  Doctor_Name: string;
+  Doctor_Id: string;
+  Token: number;
+};
+
+export type DepartmentType = {
+  _id: string;
+  Department_Name: string;
+  Phone_Number: number;
+  Email: string;
+  Services: string[];
+  Facilities: string[];
+  About: string;
+  Additional: string;
+  Associated_Hos_Id: string;
+};
+
+export type PatientType = {
+  _id: string;
+  First_Name: string;
+  Last_Name: string;
+  Phone_Number: number;
+  Email: string;
+  Date_Of_Birth: Date;
+  Gender: string;
+  Address: string
+  city: string;
+  state: string;
+  country: string;
+  zip_code: number;
 };

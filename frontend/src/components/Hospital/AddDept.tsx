@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import Select, { MultiValue, ActionMeta } from 'react-select';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import * as apiClient from '../../api-client';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 
 interface Option {
@@ -17,6 +17,11 @@ type FormFieldName = 'doctors' | 'services' | 'facilities';
 const AddDept = () => {
   const navigate = useNavigate();
   const { showToast } = useAppContext();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const hospital_id = searchParams.get('id');
+
   const [formData, setFormData] = useState({
     DName: '',
     mobile: '',
@@ -26,19 +31,20 @@ const AddDept = () => {
     facilities: [] as string[],
     about: '',
     additional: '',
+    hospital_id: '',
   });
 
-  const { data: allDocs } = useQuery(
-    ['fetchDoctors'],
-    apiClient.fetchDoctors,
-  );
+  // const { data: allDocs } = useQuery(        """"= = = >>> Doctor Selection Option <<< = = = """"
+  //   ['fetchDoctors'],
+  //   apiClient.fetchDoctors,
+  // );
 
-  const doctorsOptions: Option[] = allDocs
-    ? allDocs.map((doctor: { _id:string; first_name: string; last_name: string }) => ({
-        value: doctor._id,
-        label: doctor.first_name +" "+doctor.last_name,
-      }))
-    : [];
+  // const doctorsOptions: Option[] = allDocs
+  //   ? allDocs.map((doctor: { _id:string; first_name: string; last_name: string }) => ({
+  //       value: doctor._id,
+  //       label: doctor.first_name +" "+doctor.last_name,
+  //     }))
+  //   : [];
 
   const servicesOptions: Option[] = [
     { value: 'Emergency', label: 'Emergency Services' },
@@ -88,7 +94,7 @@ const AddDept = () => {
     }));
   };
 
-  const {mutate} = useMutation(apiClient.createDepartment, {
+  const { mutate } = useMutation(apiClient.createDepartment, {
     onSuccess: () => {
       showToast({
         message: 'Department Added',
@@ -104,14 +110,15 @@ const AddDept = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newFormData = new FormData();
-      newFormData.append('DName', formData.DName);
-      newFormData.append('mobile', formData.mobile);
-      newFormData.append('email', formData.email);
-      newFormData.append('doctors', formData.doctors.join(','));
-      newFormData.append('services', formData.services.join(','));
-      newFormData.append('facilities', formData.facilities.join(','));
-      newFormData.append('about', formData.about);
-      newFormData.append('additional', formData.additional);
+    newFormData.append('DName', formData.DName);
+    newFormData.append('mobile', formData.mobile);
+    newFormData.append('email', formData.email);
+    newFormData.append('doctors', formData.doctors.join(','));
+    newFormData.append('services', formData.services.join(','));
+    newFormData.append('facilities', formData.facilities.join(','));
+    newFormData.append('about', formData.about);
+    newFormData.append('additional', formData.additional);
+    newFormData.append('hospital_id', hospital_id as string);
     mutate(newFormData);
   };
 
@@ -213,7 +220,7 @@ const AddDept = () => {
               className="mt-1 p-5 border rounded w-full"
             />
           </div>
-          <div className="flex gap-4">
+          {/*<div className="flex gap-4">             """"= = = >>> Doctor Selection Option <<< = = = """"
             <div className="flex-grow">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Add Doctors *
@@ -229,7 +236,7 @@ const AddDept = () => {
                 onChange={handleSelectChange}
               />
             </div>
-          </div>
+          </div>*/}
           <div>
             <label htmlFor="additional" className="block text-sm font-bold">
               Additional Informations *

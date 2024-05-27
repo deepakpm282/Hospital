@@ -62,18 +62,14 @@ export const Appointment_Booking = async (formData: Appointment_Data) => {
 };
 
 export const createDepartment = async (formData: FormData) => {
-  const response = await fetch('/api/hospitals/departments', {
+  const response = await fetch(`${API_BASE_URL}/api/hospitals/departments`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
+    credentials: 'include',
+    body: formData,
   });
-
   if (!response.ok) {
     throw new Error('Failed to create department');
   }
-
   return response.json();
 };
 
