@@ -7,6 +7,10 @@ import authRoute from './routes/auth';
 import userRoute from './routes/hospitals';
 import docRoute from './routes/doctors';
 import {v2 as cloudinary } from 'cloudinary';
+import  session from 'express-session';
+import passport from 'passport';
+import './passport'; // Import the passport configuration
+import patientRoute from './routes/patients'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -27,12 +31,23 @@ app.use(
   }),
 );
 
+app.use(session({
+  secret: process.env.SESSION_SECRET as string,
+  resave: false,
+  saveUninitialized: false,
+  // cookie: { secure: false },
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/api/auth', authRoute);
 app.use('/api/hospitals', userRoute);
 app.use('/api/doctors', docRoute);
+app.use('/api/patients', patientRoute)
 
 app.listen(7000, () => {
   console.log('Server is running on port 7000');
 });
 
-export default userRoute;
+export default app;

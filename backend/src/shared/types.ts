@@ -67,6 +67,7 @@ export type DepartmentType = {
 
 export type PatientType = {
   _id: string;
+  Google_Id: string;
   First_Name: string;
   Last_Name: string;
   Phone_Number: number;
@@ -74,8 +75,8 @@ export type PatientType = {
   Date_Of_Birth: Date;
   Gender: string;
   Address: string
-  city: string;
-  state: string;
-  country: string;
-  zip_code: number;
+  City: string;
+  State: string;
+  Country: string;
+  Zip_code: number;
 };

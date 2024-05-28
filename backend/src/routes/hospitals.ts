@@ -1,4 +1,4 @@
-import express, { Request, Response, response } from "express";
+import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 import validateHospitalLogin from "../middlewares/validateHospitalLogins";
