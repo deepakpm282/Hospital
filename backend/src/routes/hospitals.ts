@@ -9,6 +9,8 @@ import multer from "multer";
 import Doctor from "../models/doctor";
 import Appointment from "../models/appointments";
 import Department from "../models/departments";
+import { error } from "console";
+import { DepartmentType } from "../shared/types";
 
 // Set up multer middleware to handle multipart form data
 const upload = multer();
@@ -118,6 +120,10 @@ router.get("/get-doctor", verifyToken, async (req: Request, res: Response) => {
 });
 
 router.get("/get-allDocs", verifyToken, async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
   try {
     const doctors = await Doctor.find().select("_id first_name last_name");
     if (!doctors) {
@@ -127,6 +133,23 @@ router.get("/get-allDocs", verifyToken, async (req: Request, res: Response) => {
     res.json(doctors);
   } catch (error) {
     res.status(500).json({ message: "Error fetching doctors" });
+  }
+});
+
+router.get("/get-allDeps", verifyToken, async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: errors.array() });
+  }
+  try {
+    const departments = await Department.find({
+      Associated_Hos_Id: req.params.id,
+    }).select("department_name _id");
+  
+    res.json( departments );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error fetching the departments" });
   }
 });
 
@@ -158,8 +181,14 @@ router.post(
           .status(404)
           .json({ message: "Not Booking from a verified hospital" });
       }
-      const { hospital_id, slot_date, time_slot, doctor_name, token, doctor_id } =
-        req.body;
+      const {
+        hospital_id,
+        slot_date,
+        time_slot,
+        doctor_name,
+        token,
+        doctor_id,
+      } = req.body;
 
       const appointment = new Appointment({
         Hospital_Name: Hos.hospital_name,
@@ -190,11 +219,9 @@ router.post(
     try {
       const hospital = await Hospital.findById(req.body.hospital_id);
       if (!hospital) {
-        return res
-          .status(401)
-          .json({
-            message: "Not a registered Hospital, Process can't be finished",
-          });
+        return res.status(401).json({
+          message: "Not a registered Hospital, Process can't be finished",
+        });
       }
       const {
         DName,
@@ -207,7 +234,7 @@ router.post(
         hospital_id,
       } = req.body;
       const department = new Department({
-        Department_Name: DName,
+        department_name: DName,
         Phone_Number: mobile,
         Email: email,
         Services: services,

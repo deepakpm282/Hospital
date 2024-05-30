@@ -1,6 +1,6 @@
 import { Hospital_Login_Data } from './pages/Authentication/SignIn';
 import { Hospital_SignUp_Data } from './pages/Authentication/SignUp';
-import { DoctorType } from '../../backend/src/shared/types';
+import { DepartmentType, DoctorType } from '../../backend/src/shared/types';
 import { HospitalType } from '../../backend/src/shared/types';
 import { Appointment_Data } from './components/Tables/Appoint';
 
@@ -49,7 +49,7 @@ export const Appointment_Booking = async (formData: Appointment_Data) => {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
     },
@@ -103,6 +103,39 @@ export const Hospital_Login = async (formData: Hospital_Login_Data) => {
   return body;
 };
 
+export const fetchDoctors = async (): Promise<DoctorType[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/hospitals/get-allDocs`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.message);
+  }
+  return body;
+};
+
+export const fetchDepartments = async (
+  associated_hos_id: string,
+): Promise<DepartmentType[]> => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/hospitals/get-allDeps?id=${associated_hos_id}`,
+    {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  const body = await response.json();
+  if (!response) {
+    throw new Error(body.message);
+  }
+  return body;
+};
+
 export const fetchDocData = async (
   hospital_id: string,
 ): Promise<DoctorType[]> => {
@@ -115,20 +148,6 @@ export const fetchDocData = async (
       },
     },
   );
-  const body = await response.json();
-  if (!response.ok) {
-    throw new Error(body.message);
-  }
-  return body;
-};
-
-export const fetchDoctors = async (): Promise<DoctorType[]> => {
-  const response = await fetch(`${API_BASE_URL}/api/hospitals/get-allDocs`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
   const body = await response.json();
   if (!response.ok) {
     throw new Error(body.message);

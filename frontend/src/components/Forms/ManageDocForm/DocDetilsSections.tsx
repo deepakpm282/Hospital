@@ -1,14 +1,51 @@
 import { useFormContext } from 'react-hook-form';
 import { DoctorFormData } from './ManageDocForm';
-// import { MouseEvent } from 'react';
+import { useQuery } from 'react-query';
+import Select from 'react-select';
+import { useLocation } from 'react-router-dom';
+import * as apiClient from '../../../api-client'
+
+
+interface Option {
+  value: string;
+  label: string;
+}
 
 const DocDetails = () => {
   const {
     register,
     formState: { errors },
-    // watch,
-    // setValue,
+    watch,
+    setValue,
   } = useFormContext<DoctorFormData>();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const associated_hos_id = searchParams.get('id');
+  
+  const { data: allDept } = useQuery(
+    ['fetchDepartments', associated_hos_id],
+    () => apiClient.fetchDepartments(associated_hos_id || ''),
+    {
+      enabled: !!associated_hos_id,
+    },
+  );
+
+
+  const departmentOptions = Array.isArray(allDept) ? allDept?.map(dept => ({
+    value: dept._id,
+    label: dept.department_name,
+  })) : [];
+
+  const selectedDepartment = departmentOptions.find(
+    option => option.value === watch('department')
+  ) || null;
+
+  const handleSelectChange = (selectedOption: Option | null) => {
+    if (selectedOption) {
+      setValue('department',  selectedOption.value);
+    }
+  };
 
   // const existingImageUrl = watch('photo_Url');
 
@@ -83,7 +120,7 @@ const DocDetails = () => {
             <span className="text-red-500">{errors.phone_number.message}</span>
           )}
         </div>
-        <div className="flex-grow">
+        <div className="flex-grow mr-4">
           <label htmlFor="email" className="block text-sm font-medium">
             Email *
           </label>
@@ -91,7 +128,7 @@ const DocDetails = () => {
             type="email"
             autoComplete="email"
             placeholder="Enter your email"
-            className="w-full rounded-lg border border-stroke bg-transparent py-3 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            className="mt-1 p-2 border rounded w-full"
             {...register('email', {
               required: 'Email is required.!',
               minLength: {
@@ -162,7 +199,7 @@ const DocDetails = () => {
             htmlFor="registration_number"
             className="block text-sm font-medium"
           >
-            Registration Number *
+            Reg Number *
           </label>
           <input
             type="number"
@@ -205,7 +242,7 @@ const DocDetails = () => {
             htmlFor="state_medical_council"
             className="block text-sm font-medium"
           >
-            state_medical_council *
+            Medical Council *
           </label>
           <input
             type="text"
@@ -240,29 +277,22 @@ const DocDetails = () => {
             <span className="text-red-500">{errors.experience.message}</span>
           )}
         </div>
-        <div className="flex-grow">
+      </div>
+      <div className="flex-grow mr-4">
           <label htmlFor="department" className="block text-sm font-medium">
             Department *
           </label>
-          <select
+          <Select
             id="department"
-            placeholder="Enter Your department(Specialization)"
-            className="mt-1 p-2 border rounded w-full"
-            {...register('department', {
-              required: 'Specialization required',
-            })}
-          >
-            <option value="">Select Department</option>
-            <option value="Oncology">Oncology</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Opthalamology">Opthalamology</option>
-          </select>
+            placeholder="Select Department"
+            options={departmentOptions}
+            onChange={handleSelectChange}
+            value = {selectedDepartment}
+          />
           {errors.department && (
             <span className="text-red-500">{errors.department.message}</span>
           )}
         </div>
-      </div>
-
       <div>
         <label htmlFor="address" className="block text-sm font-medium">
           Address *

@@ -1,6 +1,5 @@
 export type DoctorType = {
   _id: string;
-  DocId: string;
   associated_hos_id: string;
   first_name: string;
   last_name: string;
@@ -14,6 +13,7 @@ export type DoctorType = {
   year_of_registration: number;
   state_medical_council: string;
   experience: number;
+  department_id: string,
   address: string;
   city: string;
   state: string;
@@ -55,7 +55,7 @@ export type AppointmentType = {
 
 export type DepartmentType = {
   _id: string;
-  Department_Name: string;
+  department_name: string;
   Phone_Number: number;
   Email: string;
   Services: string[];
@@ -74,7 +74,7 @@ export type PatientType = {
   Email: string;
   Date_Of_Birth: Date;
   Gender: string;
-  Address: string
+  Address: string;
   City: string;
   State: string;
   Country: string;

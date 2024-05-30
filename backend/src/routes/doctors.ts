@@ -10,6 +10,7 @@ import { validationResult } from "express-validator";
 import Doctor from "../models/doctor";
 import validateRegstration from "../middlewares/validateRegistration";
 import jwt from "jsonwebtoken";
+import Department from "../models/departments";
 
 const router = express.Router();
 
@@ -100,11 +101,6 @@ router.post(
 
       newDoc.photo_Url = photoUrl;
       newDoc.password = generateDoctorPass(req.body.date_of_birth);
-      newDoc.DocId = generateDoctorId(
-        req.body.first_name,
-        req.body.last_name,
-        req.body.date_of_birth
-      );
       newDoc.isApproved = true;
       // Save the new doctor document
       console.log(newDoc)

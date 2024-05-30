@@ -33,14 +33,11 @@ type props = {
 const DocFormData = ({ onSave, isLoading }: props) => {
   const formMethods = useForm<DoctorFormData>();
   const { handleSubmit } = formMethods;
-  const location = useLocation()
-
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const associated_hos_id = searchParams.get('id');
 
   const onSubmit = handleSubmit((formDataJson: DoctorFormData) => {
-
-    const searchParams = new URLSearchParams(location.search);
-    const associated_hos_id = searchParams.get('id');
-
     const formData = new FormData();
     formData.append('first_name', formDataJson.first_name);
     formData.append('last_name', formDataJson.last_name);
@@ -62,7 +59,7 @@ const DocFormData = ({ onSave, isLoading }: props) => {
       formDataJson.state_medical_council,
     );
     formData.append('experience', formDataJson.experience.toString());
-    formData.append('department', formDataJson.department);
+    formData.append('department_id', formDataJson.department);
     formData.append('address', formDataJson.address);
     formData.append('city', formDataJson.city);
     formData.append('state', formDataJson.state);
@@ -71,13 +68,13 @@ const DocFormData = ({ onSave, isLoading }: props) => {
     if (formDataJson.photo && formDataJson.photo.length > 0) {
       formData.append('photo', formDataJson.photo[0]);
     }
-    formData.append('associated_hos_id', associated_hos_id as string)
+    formData.append('associated_hos_id', associated_hos_id as string);
     onSave(formData);
   });
 
   return (
     <FormProvider {...formMethods}>
-      <form className="space-y-4" onSubmit={onSubmit}>
+      <form className="space-y-4" onSubmit={onSubmit} >
         <DocDetilsSections />
         <span className="flex justify-end">
           <button

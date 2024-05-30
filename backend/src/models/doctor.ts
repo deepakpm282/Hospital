@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import { DoctorType } from "../shared/types";
 
 const docSchema = new mongoose.Schema<DoctorType>({
-  DocId: { type: String, required: true },
   associated_hos_id: { type: String, required: true},
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
@@ -17,6 +16,7 @@ const docSchema = new mongoose.Schema<DoctorType>({
   year_of_registration: { type: Number, required: true },
   state_medical_council: { type: String, required: true },
   experience: { type: Number, required: true },
+  department_id: { type: String, required: true},
   address: { type: String, required: true },
   city: { type: String, required: true },
   state: { type: String, required: true },

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { DepartmentType } from "../shared/types";
 
 const departmentSchema = new mongoose.Schema({
-  Department_Name: { type: String, unique: false },
+  department_name: { type: String, unique: false },
   Phone_Number: { type: Number, unique: true },
   Email: { type: String, unique: true },
   Services: { type: String },

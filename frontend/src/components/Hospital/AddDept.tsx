@@ -34,18 +34,6 @@ const AddDept = () => {
     hospital_id: '',
   });
 
-  // const { data: allDocs } = useQuery(        """"= = = >>> Doctor Selection Option <<< = = = """"
-  //   ['fetchDoctors'],
-  //   apiClient.fetchDoctors,
-  // );
-
-  // const doctorsOptions: Option[] = allDocs
-  //   ? allDocs.map((doctor: { _id:string; first_name: string; last_name: string }) => ({
-  //       value: doctor._id,
-  //       label: doctor.first_name +" "+doctor.last_name,
-  //     }))
-  //   : [];
-
   const servicesOptions: Option[] = [
     { value: 'Emergency', label: 'Emergency Services' },
     { value: 'Maternity', label: 'Maternity Services' },
@@ -220,23 +208,6 @@ const AddDept = () => {
               className="mt-1 p-5 border rounded w-full"
             />
           </div>
-          {/*<div className="flex gap-4">             """"= = = >>> Doctor Selection Option <<< = = = """"
-            <div className="flex-grow">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Add Doctors *
-              </label>
-              <Select
-                isMulti
-                name="doctors"
-                required
-                options={doctorsOptions}
-                value={doctorsOptions.filter((option) =>
-                  formData.doctors.includes(option.value),
-                )}
-                onChange={handleSelectChange}
-              />
-            </div>
-          </div>*/}
           <div>
             <label htmlFor="additional" className="block text-sm font-bold">
               Additional Informations *
