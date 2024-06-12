@@ -4,7 +4,7 @@ import { DepartmentType, DoctorType } from '../../backend/src/shared/types';
 import { HospitalType } from '../../backend/src/shared/types';
 import { Appointment_Data } from './components/Tables/Appoint';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 export const Hospital_SignUp = async (formData: Hospital_SignUp_Data) => {
   const response = await fetch(
@@ -189,11 +189,9 @@ export const validateToken = async () => {
     credentials: 'include',
     method: 'POST',
   });
-
   if (!response.ok) {
     throw new Error('Token Invalid');
   }
-
   return response.json();
 };
 

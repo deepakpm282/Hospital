@@ -18,13 +18,8 @@ const Doctorlist = () => {
   if(isLoading) {
     return <span>Loading...</span>;
   }
-  const editDoctor = () => {
-    console.log('Request accepted');
-  };
 
-  const deleteDoctor = () => {
-    console.log('Request rejected');
-  };
+  console.log("DoctorList => ", docData);
 
   return (
     <DefaultLayout>
@@ -124,14 +119,12 @@ const Doctorlist = () => {
                 <Link to={`/components/Doctor/EditDoctor/${doc._id}`}>
                     <button
                       className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded"
-                      onClick={editDoctor}
                     >
                       Edit
                     </button>
                   </Link>
                   <button
                     className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 ml-2 rounded"
-                    onClick={deleteDoctor}
                   >
                     Delete
                   </button>

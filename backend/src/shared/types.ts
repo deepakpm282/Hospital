@@ -67,16 +67,27 @@ export type DepartmentType = {
 
 export type PatientType = {
   _id: string;
-  Google_Id: string;
-  First_Name: string;
-  Last_Name: string;
-  Phone_Number: number;
-  Email: string;
-  Date_Of_Birth: Date;
-  Gender: string;
-  Address: string;
-  City: string;
-  State: string;
-  Country: string;
-  Zip_code: number;
+  google_id: string;
+  first_name: string;
+  last_name: string;
+  phone_number: number;
+  email: string;
+  date_of_birth: Date;
+  gender: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  zip_code: number;
+};
+
+export type PatientAppointmentType = {
+  _id: string;
+  asso_patient_id: string;
+  asso_appointment_id: string;
+  date: Date;
+  time_slot: string;
+  token_number: string;
+  reason: string;
+  details: string;
 };

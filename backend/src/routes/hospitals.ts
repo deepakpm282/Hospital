@@ -111,7 +111,7 @@ router.get("/get-doctor", verifyToken, async (req: Request, res: Response) => {
     }
 
     // Find doctors associated with the hospital
-    const doctors = await Doctor.find({ associated_hos_id: req.params.id });
+    const doctors = await Doctor.find({ associated_hos_id: req.query.id });
     // Send the list of doctors associated with the hospital as the response
     res.json(doctors);
   } catch (error) {

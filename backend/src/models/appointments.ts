@@ -9,7 +9,7 @@ const AppointSchema = new mongoose.Schema({
     Location: { type: String, unique: false },
     Doctor_Name: { type: String, unique: false },
     Doctor_Id: { type: String, unique: false},
-   Token: { type: Number, unique: false },
+    Token: { type: Number, unique: false },
 });
 
 AppointSchema.pre("save", async function (next) {

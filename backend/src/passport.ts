@@ -8,13 +8,12 @@ passport.use(new GoogleStrategy({
   callbackURL: '/api/auth/google/callback'
 }, async (accessToken: string, refreshToken: string, profile: Profile, done: (error: any, user?: any, info?: any) => void) => {
   try {
-    let user = await Patient.findOne({ Google_Id: profile.id });
-    console.log("User Data => ", user);
+    let user = await Patient.findOne({ google_id: profile.id });
     if (!user) {
       user = new Patient({
-        Google_Id: profile.id,
-        First_Name: profile.displayName,
-        Email: profile.emails![0].value,
+        google_id: profile.id,
+        first_name: profile.displayName,
+        email: profile.emails![0].value,
       });
       await user.save();
     }

@@ -11,6 +11,7 @@ import  session from 'express-session';
 import passport from 'passport';
 import './passport'; // Import the passport configuration
 import patientRoute from './routes/patients'
+import path from 'path';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -30,6 +31,8 @@ app.use(
     credentials: true, // Allow credentials such as cookies, authorization headers, etc.
   }),
 );
+
+app.use(express.static(path.join(__dirname, "../")))
 
 app.use(session({
   secret: process.env.SESSION_SECRET as string,
