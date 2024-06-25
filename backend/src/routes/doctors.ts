@@ -11,6 +11,7 @@ import Doctor from "../models/doctor";
 import validateRegstration from "../middlewares/validateRegistration";
 import jwt from "jsonwebtoken";
 import Department from "../models/departments";
+import Hospital from "../models/hospitals";
 
 const router = express.Router();
 
@@ -115,5 +116,38 @@ router.post(
     }
   }
 );
+
+
+router.get("/get-doctor-details", verifyToken, async (req: Request, res: Response) => {
+  try {
+    // Find the hospital based on the userId
+    const doc = await Doctor.findById(req.query.id);
+    if (!doc) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    // Find doctors associated with the hospital
+    const doctors = await Doctor.find({ associated_hos_id: req.query.id });
+    // Send the list of doctors associated with the hospital as the response
+    res.json(doctors);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching doctors" });
+  }
+});
+
+router.get("/get-data-doctor", async (req: Request, res: Response) => { // Call from flutter to get doctor Data
+  const id = req.headers['id']
+  console.log(id);
+  try {
+    const doctor = await Doctor.findOne({
+      _id: id,
+    });
+    console.log(doctor);
+    res.json(doctor);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching Doctor" });
+  }
+});
+
 
 export default router;

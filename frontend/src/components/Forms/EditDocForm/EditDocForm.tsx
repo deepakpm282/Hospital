@@ -26,7 +26,7 @@ export type DoctorFormData = {
 };
 
 type props = {
-  doctor: DoctorType
+  doctor?: DoctorType
   onSave: (docFormData: FormData) => void;
   isLoading: boolean;
 };

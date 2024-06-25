@@ -19,8 +19,6 @@ const Doctorlist = () => {
     return <span>Loading...</span>;
   }
 
-  console.log("DoctorList => ", docData);
-
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Doctor List" />

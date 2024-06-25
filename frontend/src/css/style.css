@@ -213,3 +213,17 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+.custom-input {
+  border-radius: 5px;
+  margin: 4px 0px 0px;
+  border: 1px solid;
+  padding: 8px;
+  background-color: white;
+  height: 42px;
+}
+
+.custom-input:focus {
+  outline: none;
+  border: 1px solid ;
+}

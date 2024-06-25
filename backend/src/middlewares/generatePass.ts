@@ -12,6 +12,7 @@ export const generateDoctorPass = (birthDate: Date | string): string => {
   // Combine all parts to form the Doctor ID
   const doctorId: string = `${year}${month}${day}`;
 
+
   return doctorId;
 };
 

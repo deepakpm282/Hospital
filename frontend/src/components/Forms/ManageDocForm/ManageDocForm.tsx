@@ -80,7 +80,7 @@ const DocFormData = ({ onSave, isLoading }: props) => {
           <button
             disabled={isLoading}
             type="submit"
-            className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl disabled:bg-gray-500"
+            className="bg-blue-600 text-white p-2 px-5 font-black hover:bg-blue-500 text-xl disabled:bg-gray-500 rounded-lg"
           >
             {isLoading ? 'Saving...' : 'Save'}
           </button>

@@ -1,16 +1,19 @@
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import DatePicker, { Value } from 'react-multi-date-picker';
+import { useMutation, useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import * as apiClient from '../../api-client';
+import { useAppContext } from '../../contexts/AppContext';
 import DefaultLayout from '../../layout/DefaultLayout';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
-import { useMutation, useQuery } from 'react-query';
-import * as apiClient from '../../api-client';
-import { useForm } from 'react-hook-form';
-import { useAppContext } from '../../contexts/AppContext';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import "react-multi-date-picker/styles/colors/teal.css"
+import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 
 export type Appointment_Data = {
   hospital_id: string;
   hospital_name: string;
-  slot_date: Date;
+  slot_date: Date[];
   time_slot: string;
   location: string;
   doctor_name: string;
@@ -21,6 +24,7 @@ export type Appointment_Data = {
 const Appointment: React.FC = () => {
   const [fromTime, setFromTime] = useState({ hour: 1, ampm: 'AM' });
   const [toTime, setToTime] = useState({ hour: 1, ampm: 'AM' });
+  const [selectedDates, setSelectedDates] = useState<Value[]>([]);
 
   const navigate = useNavigate();
   const { showToast } = useAppContext();
@@ -55,7 +59,10 @@ const Appointment: React.FC = () => {
     }
   }, [HosData, setValue]);
 
-  const today = new Date().toISOString().split('T')[0];
+  const handleDateChange = (dates: Value[]) => {
+    setSelectedDates(dates);
+    setValue('slot_date', dates as Date[]);
+  };
 
   const mutation = useMutation(apiClient.Appointment_Booking, {
     onSuccess: () => {
@@ -75,7 +82,6 @@ const Appointment: React.FC = () => {
     );
     if (hospital_id) data.hospital_id = hospital_id;
     if (selected_doc) data.doctor_id = selected_doc._id;
-    console.log("Appointment Data => ",data);
     mutation.mutate(data);
   });
 
@@ -145,17 +151,22 @@ const Appointment: React.FC = () => {
               />
             </div>
           </div>
-          <div className="flex gap-4">
+          <div className="flex">
             <div className="flex-grow mr-4">
               <label htmlFor="slot_date" className="block text-sm font-medium">
                 Select Date *
               </label>
-              <input
-                type="date"
-                min={today}
-                className="mt-1 p-2 border rounded w-full"
-                {...register('slot_date', { required: 'Date is required' })}
-              />
+                <DatePicker
+                  inputClass='custom-input'
+                  multiple
+                  value={selectedDates}
+                  onChange={handleDateChange}
+                  format="YYYY-MM-DD"
+                  placeholder="Select dates"
+                  plugins={[
+                    <DatePanel/>
+                  ]}
+                />
               {errors.slot_date && (
                 <span className="text-red-500">{errors.slot_date.message}</span>
               )}

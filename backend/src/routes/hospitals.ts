@@ -259,8 +259,8 @@ router.get("/:id", verifyToken, async (req: Request, res: Response) => {
   try {
     const doctor = await Doctor.findOne({
       _id: id,
-      userId: req.userId,
     });
+    console.log(doctor);
     res.json(doctor);
   } catch (error) {
     res.status(500).json({ message: "Error fetching Doctor" });

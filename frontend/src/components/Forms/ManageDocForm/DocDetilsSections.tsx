@@ -160,7 +160,7 @@ const DocDetails = () => {
             <span className="text-red-500">{errors.date_of_birth.message}</span>
           )}
         </div>
-        <div className="flex-grow">
+        <div className="flex-grow mr-4">
           <label htmlFor="gender" className="block text-sm font-medium">
             Gender *
           </label>
@@ -215,13 +215,12 @@ const DocDetails = () => {
             </span>
           )}
         </div>
-
         <div className="flex-grow mr-4">
           <label
             htmlFor="year_of_registration"
             className="block text-sm font-medium"
           >
-            Year of Registration *
+            Year of Reg *
           </label>
           <input
             type="number"
@@ -293,7 +292,7 @@ const DocDetails = () => {
             <span className="text-red-500">{errors.department.message}</span>
           )}
         </div>
-      <div>
+      <div className='flex-grow mr-4'>
         <label htmlFor="address" className="block text-sm font-medium">
           Address *
         </label>
@@ -353,7 +352,7 @@ const DocDetails = () => {
           )}
         </div>
 
-        <div className="flex-grow">
+        <div className="flex-grow mr-4">
           <label htmlFor="zip_code" className="block text-sm font-medium">
             Postal Code *
           </label>

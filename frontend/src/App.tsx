@@ -89,6 +89,22 @@ function App() {
             </>
           }
         />
+        {/* <Route
+          path="/components/Forms/DatePicker/DatePickerOne"
+          element={
+            <>
+              <DatePickerOne/>
+            </>
+          }
+        />
+        <Route
+          path="/components/Forms/DatePicker/DatePickerTwo"
+          element={
+            <>
+              <DatePickerTwo/>
+            </>
+          }
+        /> */}
         <Route
           path="/profile"
           element={

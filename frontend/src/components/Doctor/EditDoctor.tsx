@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import * as apiClient from '../../api-client'
 import EditDocForm from "../Forms/EditDocForm/EditDocForm";
@@ -8,14 +8,20 @@ import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 const EditDoc = () => {
   const { DocId } = useParams();
 
-  const { data: doctor } = useQuery("fetchDocById", () => apiClient.fetchDocById(DocId || ''), {
+  const { data: doctorData, isLoading } = useQuery(["fetchDocById", DocId], () => apiClient.fetchDocById(DocId || ''),
+   {
     enabled: !!DocId,
   });
+
+  console.log("Doctor Data => ", doctorData)
+  const handleSave= () => {
+    console.log(doctorData)
+  }
 
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Add Doctor" />
-      <EditDocForm doctor = { doctor }/>
+      <EditDocForm doctor = { doctorData } onSave={ handleSave} isLoading = {isLoading}/>
     </DefaultLayout>
   );
 }
