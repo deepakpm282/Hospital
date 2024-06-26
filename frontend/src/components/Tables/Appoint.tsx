@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import DatePicker, { Value } from 'react-multi-date-picker';
+import DatePicker, { DateObject, Value } from 'react-multi-date-picker';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import * as apiClient from '../../api-client';
@@ -9,6 +9,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
 import "react-multi-date-picker/styles/colors/teal.css"
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
+import { format } from 'date-fns';
 
 export type Appointment_Data = {
   hospital_id: string;
@@ -22,9 +23,10 @@ export type Appointment_Data = {
 };
 
 const Appointment: React.FC = () => {
+
   const [fromTime, setFromTime] = useState({ hour: 1, ampm: 'AM' });
   const [toTime, setToTime] = useState({ hour: 1, ampm: 'AM' });
-  const [selectedDates, setSelectedDates] = useState<Value[]>([]);
+  const [selectedDates, setSelectedDates] = useState([new Date]);
 
   const navigate = useNavigate();
   const { showToast } = useAppContext();
@@ -59,7 +61,10 @@ const Appointment: React.FC = () => {
     }
   }, [HosData, setValue]);
 
-  const handleDateChange = (dates: Value[]) => {
+  const handleDateChange = (dates: Date[]) => {
+    const formatted_dates = dates.map(date => format(date, 'dd-MM-yyyy'));
+    console.log(formatted_dates)
+    console.log(dates)
     setSelectedDates(dates);
     setValue('slot_date', dates as Date[]);
   };
@@ -82,7 +87,7 @@ const Appointment: React.FC = () => {
     );
     if (hospital_id) data.hospital_id = hospital_id;
     if (selected_doc) data.doctor_id = selected_doc._id;
-    mutation.mutate(data);
+    // mutation.mutate(data);
   });
 
   return (
@@ -160,7 +165,7 @@ const Appointment: React.FC = () => {
                   inputClass='custom-input'
                   multiple
                   value={selectedDates}
-                  onChange={handleDateChange}
+                  onChange={selectedDates => handleDateChange(selectedDates.map(date => date.toDate()))}
                   format="YYYY-MM-DD"
                   placeholder="Select dates"
                   plugins={[

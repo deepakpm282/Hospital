@@ -190,20 +190,22 @@ router.post(
         doctor_id,
       } = req.body;
 
-      const appointment = new Appointment({
-        Hospital_Name: Hos.hospital_name,
-        Hospital_Id: hospital_id,
-        Slot_Date: slot_date,
-        Time_Slot: time_slot,
-        Location: Hos.address,
-        Doctor_Name: doctor_name,
-        Doctor_Id: doctor_id,
-        Token: token,
-      });
-      await appointment.save();
-      res
-        .status(200)
-        .json({ message: "Appointment saved successfully", appointment });
+      console.log(slot_date)
+
+      // const appointment = new Appointment({
+      //   Hospital_Name: Hos.hospital_name,
+      //   Hospital_Id: hospital_id,
+      //   Slot_Date: slot_date,
+      //   Time_Slot: time_slot,
+      //   Location: Hos.address,
+      //   Doctor_Name: doctor_name,
+      //   Doctor_Id: doctor_id,
+      //   Token: token,
+      // });
+      // await appointment.save();
+      // res
+      //   .status(200)
+      //   .json({ message: "Appointment saved successfully", appointment });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Something went wrong" });
