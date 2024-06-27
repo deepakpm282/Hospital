@@ -4,7 +4,7 @@ import { AppointmentType } from "../shared/types";
 const AppointSchema = new mongoose.Schema({
     Hospital_Id: { type: String, unique: false },
     Hospital_Name: { type: String, unique: false },
-    Slot_Date: { type: Date, unique: false },
+    Slot_Date: { type: [String], unique: false },
     Time_Slot: { type: String, unique: false },
     Location: { type: String, unique: false },
     Doctor_Name: { type: String, unique: false },

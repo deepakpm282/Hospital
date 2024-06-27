@@ -2,11 +2,10 @@
 
 const TableOne = () => {
   const acceptRequest = () => {
-    console.log("Request accepted");
   
   };
   const rejectRequest = () => {
-    console.log("Request rejected");
+    
   };
 
   const brandData = [

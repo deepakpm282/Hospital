@@ -45,7 +45,7 @@ export type AppointmentType = {
   _id: string;
   Hospital_Id: string;
   Hospital_Name: string;
-  Slot_Date: Date;
+  Slot_Date: string[];
   Time_Slot: string;
   Location: string;
   Doctor_Name: string;

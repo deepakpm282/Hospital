@@ -14,7 +14,7 @@ import { format } from 'date-fns';
 export type Appointment_Data = {
   hospital_id: string;
   hospital_name: string;
-  slot_date: Date[];
+  slot_date: string[];
   time_slot: string;
   location: string;
   doctor_name: string;
@@ -26,7 +26,7 @@ const Appointment: React.FC = () => {
 
   const [fromTime, setFromTime] = useState({ hour: 1, ampm: 'AM' });
   const [toTime, setToTime] = useState({ hour: 1, ampm: 'AM' });
-  const [selectedDates, setSelectedDates] = useState([new Date]);
+  const [selectedDates, setSelectedDates] = useState<DateObject[]>([]);
 
   const navigate = useNavigate();
   const { showToast } = useAppContext();
@@ -61,12 +61,8 @@ const Appointment: React.FC = () => {
     }
   }, [HosData, setValue]);
 
-  const handleDateChange = (dates: Date[]) => {
-    const formatted_dates = dates.map(date => format(date, 'dd-MM-yyyy'));
-    console.log(formatted_dates)
-    console.log(dates)
+  const handleDateChange = (dates: DateObject[]) => {
     setSelectedDates(dates);
-    setValue('slot_date', dates as Date[]);
   };
 
   const mutation = useMutation(apiClient.Appointment_Booking, {
@@ -80,6 +76,7 @@ const Appointment: React.FC = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
+    data.slot_date =  selectedDates.map(date => date.toDate().toISOString().split('T')[0]);
     data.time_slot = `${fromTime.hour}${fromTime.ampm} - ${toTime.hour}${toTime.ampm}`;
     const selected_doc = allDocs?.find(
       (doctor) =>
@@ -87,7 +84,7 @@ const Appointment: React.FC = () => {
     );
     if (hospital_id) data.hospital_id = hospital_id;
     if (selected_doc) data.doctor_id = selected_doc._id;
-    // mutation.mutate(data);
+    mutation.mutate(data);
   });
 
   return (
@@ -163,10 +160,10 @@ const Appointment: React.FC = () => {
               </label>
                 <DatePicker
                   inputClass='custom-input'
+                  required
                   multiple
                   value={selectedDates}
-                  onChange={selectedDates => handleDateChange(selectedDates.map(date => date.toDate()))}
-                  format="YYYY-MM-DD"
+                  onChange={handleDateChange}
                   placeholder="Select dates"
                   plugins={[
                     <DatePanel/>
