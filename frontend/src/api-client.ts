@@ -1,8 +1,11 @@
+import {
+  DepartmentType,
+  DoctorType,
+  HospitalType,
+} from '../../backend/src/shared/types';
+import { Appointment_Data } from './components/Tables/Appoint';
 import { Hospital_Login_Data } from './pages/Authentication/SignIn';
 import { Hospital_SignUp_Data } from './pages/Authentication/SignUp';
-import { DepartmentType, DoctorType } from '../../backend/src/shared/types';
-import { HospitalType } from '../../backend/src/shared/types';
-import { Appointment_Data } from './components/Tables/Appoint';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
@@ -175,13 +178,30 @@ export const fetchHosData = async (
 };
 
 export const fetchDocById = async (DocId: string): Promise<DoctorType> => {
-  const response = await fetch(`${API_BASE_URL}/api/hospitals/${DocId}`, {
+  const response = await fetch(`${API_BASE_URL}/api/hospitals/doctor-data?id=${DocId}`, {
     credentials: 'include',
   });
   if (!response.ok) {
     throw new Error('Error Fetching Doctor');
   }
   return response.json();
+};
+
+export const fetchHosDashData = async (associated_hos_id: string) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/hospitals/all-hod-dash-data?Hos_id=${associated_hos_id}`,
+    {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  const responseBody = await response.json();
+  if (!response.ok) {
+    throw new Error(responseBody.message);
+  }
+  return responseBody;
 };
 
 export const validateToken = async () => {

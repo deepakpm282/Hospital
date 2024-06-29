@@ -14,7 +14,7 @@ import { format } from 'date-fns';
 export type Appointment_Data = {
   hospital_id: string;
   hospital_name: string;
-  slot_date: string[];
+  slot_date: Date[];
   time_slot: string;
   location: string;
   doctor_name: string;
@@ -76,7 +76,7 @@ const Appointment: React.FC = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    data.slot_date =  selectedDates.map(date => date.toDate().toISOString().split('T')[0]);
+    data.slot_date =  selectedDates.map(date => date.toDate());
     data.time_slot = `${fromTime.hour}${fromTime.ampm} - ${toTime.hour}${toTime.ampm}`;
     const selected_doc = allDocs?.find(
       (doctor) =>

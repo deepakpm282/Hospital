@@ -12,8 +12,7 @@ const EditDoc = () => {
    {
     enabled: !!DocId,
   });
-
-  console.log("Doctor Data => ", doctorData)
+  
   const handleSave= () => {
     console.log(doctorData)
   }

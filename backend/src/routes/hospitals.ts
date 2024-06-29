@@ -1,16 +1,16 @@
 import express, { Request, Response } from "express";
+import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
-import { check, validationResult } from "express-validator";
-import validateHospitalLogin from "../middlewares/validateHospitalLogins";
-import Hospital from "../models/hospitals";
-import validateHos from "../middlewares/validateHospitalRegistration";
-import verifyToken from "../middlewares/auth";
 import multer from "multer";
-import Doctor from "../models/doctor";
+import verifyToken from "../middlewares/auth";
+import validateHospitalLogin from "../middlewares/validateHospitalLogins";
+import validateHos from "../middlewares/validateHospitalRegistration";
 import Appointment from "../models/appointments";
 import Department from "../models/departments";
-import { error } from "console";
-import { DepartmentType } from "../shared/types";
+import Doctor from "../models/doctor";
+import Hospital from "../models/hospitals";
+import patientAppointment from "../models/patient-appoiments";
+import Patient from "../models/patients";
 
 // Set up multer middleware to handle multipart form data
 const upload = multer();
@@ -145,8 +145,8 @@ router.get("/get-allDeps", verifyToken, async (req: Request, res: Response) => {
     const departments = await Department.find({
       Associated_Hos_Id: req.params.id,
     }).select("department_name _id");
-  
-    res.json( departments );
+
+    res.json(departments);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error fetching the departments" });
@@ -170,18 +170,27 @@ router.get("/get-HosName", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * Handles the POST request for appointment booking.
+ * 
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves when the appointment is saved.
+ */
 router.post(
   "/appointment-booking",
   verifyToken,
   async (req: Request, res: Response) => {
     try {
+      // Find the hospital by ID
       const Hos = await Hospital.findById(req.body.hospital_id);
       if (!Hos) {
+        // If hospital is not found, return a 404 error
         return res
           .status(404)
           .json({ message: "Not Booking from a verified hospital" });
       }
-      console.log(req.body)
+      console.log(req.body);
       const {
         hospital_id,
         slot_date,
@@ -191,6 +200,7 @@ router.post(
         doctor_id,
       } = req.body;
 
+      // Create a new appointment object
       const appointment = new Appointment({
         Hospital_Name: Hos.hospital_name,
         Hospital_Id: hospital_id,
@@ -201,16 +211,22 @@ router.post(
         Doctor_Id: doctor_id,
         Token: token,
       });
+
+      // Save the appointment to the database
       await appointment.save();
+
+      // Return a success response with the saved appointment
       res
         .status(200)
         .json({ message: "Appointment saved successfully", appointment });
     } catch (error) {
+      // Handle any errors that occur during the operation
       console.log(error);
       res.status(500).json({ message: "Something went wrong" });
     }
   }
 );
+
 
 router.post(
   "/departments",
@@ -255,17 +271,58 @@ router.post(
   }
 );
 
-router.get("/:id", verifyToken, async (req: Request, res: Response) => {
-  const id = req.params.id.toString();
+/**
+ * Retrieves doctor data based on the provided id.
+ * Requires a valid token for authentication.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves when the doctor data is fetched successfully.
+ */
+router.get("/doctor-data", verifyToken, async (req: Request, res: Response) => {
+  const id = req.query.id;
   try {
     const doctor = await Doctor.findOne({
       _id: id,
     });
-    console.log(doctor);
     res.json(doctor);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching Doctor" });
+    res.status(500).json({ message: "Error Fetching Doctor" });
   }
 });
+
+router.get(
+  "/all-hod-dash-data",
+  verifyToken,
+async (req: Request, res: Response) => {
+  try {
+    const hos_id = req.query.Hos_id as string;
+    if (!hos_id)
+      return res
+        .status(401)
+        .json({ message: "Did not sign in as a Hospital" });
+
+    const today = new Date();
+    const new_appointments = await patientAppointment.find({
+      asso_hospital_id: hos_id,
+      date_slot: { $gte: today }, //$gte to check if the today is greater than slot_date;
+    });
+    const total_doctors = await Doctor.find({ associated_hos_id: hos_id });
+    const total_departments = await Department.find({ associated_hos_id: hos_id });
+    const patients_in_hospital = await patientAppointment.aggregate([
+      { $match: { associated_hos_id: hos_id} },
+      { $group: { _id: "$asso_patient_id" }},
+    ]);
+    return res.status(200).json({
+      tot_app: new_appointments,
+      tot_doc: total_doctors,
+      tot_dep: total_departments,
+      tot_pat: patients_in_hospital,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something Went Wrong" });
+  }
+});
+
 
 export default router;

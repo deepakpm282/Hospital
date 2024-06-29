@@ -3,12 +3,24 @@ import CardDataStats from '../../components/CardDataStats';
 import TableOne from '../../components/Tables/TableOne';
 import DefaultLayout from '../../layout/DefaultLayout';
 import PastAppointments from '../../components/Tables/PastAppointments';
+import { useQuery } from 'react-query';
+import * as apiClient from '../../api-client';
+import { useLocation } from 'react-router-dom';
 
 const HosDash: React.FC = () => {
+
+  const location = useLocation();
+  const searchParams = new  URLSearchParams(location.search);
+  const associated_hos_id = searchParams.get('id');
+  const { data: allHosDashData } = useQuery(['fetchHosDashData', associated_hos_id], () => apiClient.fetchHosDashData(associated_hos_id || ' '),
+    {
+      enabled: !!associated_hos_id,
+    });
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="New Appointments" total="11" rate="" levelUp>
+        <CardDataStats title="Upcoming Appointments" total={allHosDashData.tot_app.length.toString()} rate="" levelUp>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -27,7 +39,7 @@ const HosDash: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Doctors" total="40" rate="" levelUp>
+        <CardDataStats title="Total Doctors" total={allHosDashData.tot_doc.length.toString()} rate="" levelUp>
           <svg 
             width="25" 
             height="25" 
@@ -47,13 +59,13 @@ const HosDash: React.FC = () => {
           </svg>
           
         </CardDataStats>
-        <CardDataStats title="Total Patients" total="1112" rate="" levelUp>
+        <CardDataStats title="Total Patients" total={allHosDashData.tot_pat.length.toString()} rate="" levelUp>
         <svg className="fill-primary dark:fill-white" width="25" height="25" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="m22.102 11.147v1.731h-20.198v-6.206h-1.904v12.414h1.904v-2.837h20.198v3.074h1.898v-8.178z"/><path d="m8.709 11.165v.001c0 .564-.457 1.022-1.022 1.022h-.001-3.892-.001c-.564 0-1.022-.457-1.022-1.022v-.001-.001c0-.564.457-1.022 1.022-1.022h.001 3.892.001c.564 0 1.022.457 1.022 1.022z"/>
           <path d="m19.743 7.164h-2.37v-2.364h-1.68v2.365h-2.365v1.68h2.364v2.365h1.68v-2.365h2.37z"/>
         </svg>
         </CardDataStats>
-        <CardDataStats title="Departments" total="15" rate="" levelDown>
+        <CardDataStats title="Departments" total={allHosDashData.tot_dep.length.toString()} rate="" levelDown>
           <svg
             className="fill-primary dark:fill-white"
             width="22"

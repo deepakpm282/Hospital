@@ -37,7 +37,6 @@ const DocFormData = ({ onSave, isLoading, doctor }: props) => {
 
   useEffect(() => {
     if(doctor && doctor.date_of_birth instanceof Date){
-      console.log("Is inside")
         const doctorCopy = {
             ...doctor,
             date_of_birth: doctor.date_of_birth.toISOString().split('T')[0], // Convert Date object to string

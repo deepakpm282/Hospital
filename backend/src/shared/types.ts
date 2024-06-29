@@ -53,6 +53,18 @@ export type AppointmentType = {
   Token: number;
 };
 
+export type PatientAppointmentType = {
+  _id: string;
+  asso_patient_id: string;
+  asso_appointment_id: string;
+  asso_hospital_id: string;
+  date_slot: Date;
+  time_slot: string;
+  token_number: string;
+  reason: string;
+  details: string;
+};
+
 export type DepartmentType = {
   _id: string;
   department_name: string;
@@ -79,15 +91,4 @@ export type PatientType = {
   state: string;
   country: string;
   zip_code: number;
-};
-
-export type PatientAppointmentType = {
-  _id: string;
-  asso_patient_id: string;
-  asso_appointment_id: string;
-  date: Date;
-  time_slot: string;
-  token_number: string;
-  reason: string;
-  details: string;
 };
